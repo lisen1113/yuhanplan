@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语涵学习助手 ✨</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部区域 -->
+        <header class="header">
+            <div class="user-info">
+                <div class="avatar">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="user-details">
+                    <h1>语涵学习助手</h1>
+                    <p class="subtitle">八年级专属 · 智能学习计划</p>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="completed-count">0</span>
+                    <span class="stat-label">已完成</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="streak-days">0</span>
+                    <span class="stat-label">连续打卡</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="total-points">100</span>
+                    <span class="stat-label">学习币</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 日期和进度 -->
+        <div class="date-section">
+            <div class="current-date">
+                <h2 id="current-date">2026年5月26日 星期二</h2>
+                <p class="day-type" id="day-type">工作日</p>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="progress-text">今日进度: 0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 激励语区域 -->
+        <div class="motivation-section">
+            <div class="motivation-card">
+                <i class="fas fa-star"></i>
+                <p id="motivation-text">今天也是闪闪发光的一天！✨</p>
+                <button class="refresh-motivation" onclick="refreshMotivation()">
+                    <i class="fas fa-redo"></i> 换一句
+                </button>
+            </div>
+        </div>
+
+        <!-- 任务列表 -->
+        <div class="tasks-section">
+            <h3><i class="fas fa-list-check"></i> 今日学习任务</h3>
+            <div class="tasks-container" id="tasks-container">
+                <!-- 任务将通过JS动态生成 -->
+            </div>
+        </div>
+
+        <!-- 娱乐奖励 -->
+        <div class="rewards-section">
+            <h3><i class="fas fa-gift"></i> 完成奖励</h3>
+            <div class="rewards-container">
+                <div class="reward-item" onclick="claimReward('music')">
+                    <i class="fas fa-music"></i>
+                    <span>解锁一首歌</span>
+                </div>
+                <div class="reward-item" onclick="claimReward('joke')">
+                    <i class="fas fa-laugh-squint"></i>
+                    <span>听个笑话</span>
+                </div>
+                <div class="reward-item" onclick="claimReward('meme')">
+                    <i class="fas fa-image"></i>
+                    <span>看个表情包</span>
+                </div>
+                <div class="reward-item" onclick="claimReward('game')">
+                    <i class="fas fa-gamepad"></i>
+                    <span>小游戏时间</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 编辑计划按钮 -->
+        <div class="edit-section">
+            <button class="edit-plan-btn" onclick="openEditModal()">
+                <i class="fas fa-edit"></i> 自定义我的计划
+            </button>
+        </div>
+    </div>
+
+    <!-- 编辑计划模态框 -->
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-sliders-h"></i> 自定义学习计划</h3>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>计划名称</label>
+                    <input type="text" id="plan-name" value="语涵学习助手" placeholder="给你的计划起个酷炫的名字">
+                </div>
+                <div class="form-group">
+                    <label>每日目标完成奖励</label>
+                    <input type="number" id="daily-reward" value="50" min="10" max="200">
+                    <span class="hint">学习币奖励数量</span>
+                </div>
+                <div class="form-group">
+                    <label>提醒音效</label>
+                    <select id="sound-effect">
+                        <option value="bell">清脆铃声</option>
+                        <option value="chime">风铃音</option>
+                        <option value="success">成功音效</option>
+                        <option value="none">无音效</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>主题颜色</label>
+                    <div class="color-options">
+                        <div class="color-option" style="background-color: #6a5acd;" onclick="selectColor('#6a5acd')"></div>
+                        <div class="color-option" style="background-color: #ff6b6b;" onclick="selectColor('#ff6b6b')"></div>
+                        <div class="color-option" style="background-color: #4ecdc4;" onclick="selectColor('#4ecdc4')"></div>
+                        <div class="color-option" style="background-color: #ffd166;" onclick="selectColor('#ffd166')"></div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="save-btn" onclick="savePlanSettings()">保存设置</button>
+                    <button class="cancel-btn" onclick="closeEditModal()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 奖励展示模态框 -->
+    <div class="modal" id="reward-modal">
+        <div class="modal-content reward-content">
+            <div class="modal-header">
+                <h3 id="reward-title">奖励时间！</h3>
+                <button class="close-btn" onclick="closeRewardModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="reward-body">
+                <!-- 奖励内容动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 音效 -->
+    <audio id="complete-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
+    <audio id="reward-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" preload="auto"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
