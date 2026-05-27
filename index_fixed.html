@@ -7,11 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="学习搭子">
 <meta name="theme-color" content="#7c6ff7">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="application-name" content="学习搭子">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
 <title>语涵的学习搭子</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -371,8 +367,7 @@ function render(){
 <div class="bottom-actions">
   <button class="btn btn-outline" onclick="openSettings()">⚙️ 设置</button>
   <button class="btn btn-solid" onclick="resetToday()">🔄 重置今天</button>
-</div>
-<button id="installBtn" style="display:none;position:fixed;bottom:80px;right:16px;z-index:1000;background:var(--purple);color:white;border:none;border-radius:50%;width:56px;height:56px;box-shadow:0 4px 12px rgba(124,111,247,.4);font-size:24px;cursor:pointer">📱</button>`;
+</div>`;
 }
 
 function selectDay(dk){selectedDay=dk;render();saveAll()}
@@ -542,34 +537,6 @@ function spawnSparks(el){
   for(let i=0;i<8;i++){const s=document.createElement('div');s.className='spark';s.textContent=['✨','⭐','💫','🌟','🎉','💖','🔥','💪'][i];s.style.left=cx+'px';s.style.top=cy+'px';const a=Math.random()*Math.PI*2,d=40+Math.random()*70;s.style.setProperty('--sx',Math.cos(a)*d+'px');s.style.setProperty('--sy',Math.sin(a)*d+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),900)}
 }
 ['ol-settings','ol-task','ol-reward'].forEach(id=>{document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeOverlay(id)})});
-// PWA 安装提示
-let deferredPrompt;
-const installBtn = document.getElementById('installBtn');
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if (installBtn) {
-    installBtn.style.display = 'block';
-    installBtn.addEventListener('click', () => {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('用户同意安装');
-        }
-        deferredPrompt = null;
-        installBtn.style.display = 'none';
-      });
-    });
-  }
-});
-
-// 检测是否已安装
-window.addEventListener('appinstalled', () => {
-  console.log('PWA 已安装到桌面');
-  if (installBtn) installBtn.style.display = 'none';
-});
-
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
 
 init();
