@@ -1,168 +1,703 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>语涵学习助手 ✨</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>语涵的学习搭子</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#faf8ff;--card:#fff;--text:#2d2b3a;--sub:#8b87a0;
+  --purple:#7c6ff7;--pink:#f472b6;--mint:#34d399;--amber:#fbbf24;
+  --red:#f87171;--blue:#60a5fa;
+  --shadow:0 1px 3px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.06);
+  --radius:20px;--radius-sm:14px;
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;
+  -webkit-tap-highlight-color:transparent;user-select:none;
+}
+.container{max-width:480px;margin:0 auto;padding:12px 16px 100px}
+
+/* 顶部 */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 0 16px}
+.greeting{font-size:13px;color:var(--sub)}
+.greeting b{display:block;font-size:20px;color:var(--text);font-weight:700;margin-top:2px}
+.mascot-wrap{position:relative}
+.mascot{
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,#e0d9ff,#c4b5fd);
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+  box-shadow:0 4px 16px rgba(124,111,247,.25);cursor:pointer;
+  transition:transform .2s;position:relative;
+}
+.mascot:active{transform:scale(.92)}
+.mascot-bubble{
+  position:absolute;top:-36px;right:-10px;
+  background:var(--text);color:#fff;font-size:11px;padding:5px 10px;
+  border-radius:12px 12px 12px 4px;white-space:nowrap;opacity:0;
+  transform:translateY(4px);transition:all .3s;pointer-events:none;
+}
+.mascot-bubble.show{opacity:1;transform:translateY(0)}
+
+/* 状态卡片 */
+.stat-row{display:flex;gap:10px;margin-bottom:14px}
+.stat-card{
+  flex:1;background:var(--card);border-radius:var(--radius-sm);
+  padding:14px;box-shadow:var(--shadow);text-align:center;
+  transition:transform .2s;
+}
+.stat-card:active{transform:scale(.97)}
+.stat-num{font-size:26px;font-weight:800;line-height:1}
+.stat-num.purple{color:var(--purple)}
+.stat-num.pink{color:var(--pink)}
+.stat-num.mint{color:var(--mint)}
+.stat-label{font-size:11px;color:var(--sub);margin-top:4px}
+
+/* 进度条 */
+.progress-wrap{background:var(--card);border-radius:var(--radius-sm);padding:14px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.progress-top span{font-size:13px;font-weight:600}
+.progress-pct{color:var(--purple)}
+.progress-bar{height:6px;background:#f0edf6;border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--pink));border-radius:10px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+
+/* 搭子说的话 */
+.buddy-msg{
+  background:linear-gradient(135deg,#f5f0ff,#fdf2f8);border-radius:var(--radius-sm);
+  padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;
+  box-shadow:var(--shadow);cursor:pointer;transition:transform .2s;
+}
+.buddy-msg:active{transform:scale(.98)}
+.buddy-avatar{font-size:32px;flex-shrink:0}
+.buddy-text{flex:1}
+.buddy-text .name{font-size:12px;color:var(--purple);font-weight:600}
+.buddy-text .msg{font-size:14px;color:var(--text);margin-top:2px;line-height:1.5}
+
+/* 任务区 */
+.section-title{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.task-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.task{
+  background:var(--card);border-radius:var(--radius-sm);padding:14px 16px;
+  box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;
+  transition:all .25s;cursor:pointer;position:relative;overflow:hidden;
+  border-left:4px solid transparent;
+}
+.task.done{border-left-color:var(--mint);background:#f8fdf9}
+.task.done .task-name{text-decoration:line-through;color:#b0b0b0}
+.task.done .task-time{color:#c0c0c0}
+.task-emoji{font-size:24px;flex-shrink:0}
+.task-info{flex:1;min-width:0}
+.task-name{font-size:14px;font-weight:600;transition:color .2s}
+.task-time{font-size:11px;color:var(--sub);margin-top:2px}
+.task-tag{
+  display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;
+  font-weight:500;margin-left:6px;
+}
+.tag-en{background:#ede9fe;color:#7c3aed}
+.tag-cn{background:#fef3c7;color:#d97706}
+.tag-ma{background:#fce7f3;color:#db2777}
+.tag-ph{background:#d1fae5;color:#059669}
+.tag-ch{background:#f3e8ff;color:#9333ea}
+.tag-fr{background:#e0e7ff;color:#4f46e5}
+.tag-ot{background:#ecfdf5;color:#0d9488}
+.task-check{
+  width:36px;height:36px;border-radius:50%;border:2.5px solid #e5e0ec;
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  transition:all .25s;font-size:16px;color:transparent;
+}
+.task.done .task-check{background:var(--mint);border-color:var(--mint);color:#fff}
+
+/* 奖励区 */
+.reward-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.reward-btn{
+  background:var(--card);border-radius:var(--radius-sm);padding:16px 12px;
+  box-shadow:var(--shadow);text-align:center;cursor:pointer;
+  transition:all .2s;border:none;font-family:inherit;font-size:13px;
+  font-weight:600;color:var(--text);display:flex;flex-direction:column;
+  align-items:center;gap:6px;
+}
+.reward-btn:active{transform:scale(.95)}
+.reward-btn .icon{font-size:28px}
+.reward-btn .cost{font-size:10px;color:var(--sub);margin-top:2px}
+
+/* 底部按钮 */
+.bottom-actions{display:flex;gap:10px;margin-top:8px}
+.btn{
+  flex:1;padding:12px;border-radius:25px;font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .2s;border:none;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.btn-outline{background:transparent;border:2px solid var(--purple);color:var(--purple)}
+.btn-outline:active{background:var(--purple);color:#fff}
+.btn-solid{background:var(--purple);color:#fff}
+.btn-solid:active{opacity:.85}
+
+/* 弹窗 */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.overlay.show{opacity:1;pointer-events:auto}
+.sheet{
+  background:var(--card);width:100%;max-width:480px;max-height:80vh;
+  border-radius:24px 24px 0 0;padding:20px 20px 32px;overflow-y:auto;
+  transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.overlay.show .sheet{transform:translateY(0)}
+.sheet-handle{width:36px;height:4px;background:#e0dce8;border-radius:4px;margin:0 auto 16px}
+.sheet h3{font-size:17px;font-weight:700;margin-bottom:16px;text-align:center}
+
+/* 设置表单 */
+.set-row{margin-bottom:14px}
+.set-row label{display:block;font-size:12px;font-weight:600;color:var(--sub);margin-bottom:6px}
+.set-row input,.set-row select{
+  width:100%;padding:10px 14px;border:2px solid #eee;border-radius:12px;
+  font-size:14px;font-family:inherit;background:#fafafa;transition:border .2s;
+}
+.set-row input:focus,.set-row select:focus{outline:none;border-color:var(--purple);background:#fff}
+.color-pick{display:flex;gap:8px}
+.color-dot{
+  width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .2s;
+}
+.color-dot.active{border-color:var(--text);transform:scale(1.15)}
+
+/* 奖励弹窗 */
+.reward-pop{text-align:center;padding:10px 0}
+.reward-pop .big-emoji{font-size:64px;margin-bottom:12px;animation:bounce .6s}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.reward-pop .title{font-size:18px;font-weight:700;margin-bottom:6px}
+.reward-pop .desc{font-size:13px;color:var(--sub);margin-bottom:16px;line-height:1.6}
+
+/* 小游戏 */
+.game-area{text-align:center;padding:10px 0}
+.game-canvas{border-radius:12px;background:#f8f6ff;margin-bottom:12px;touch-action:none}
+.game-score{font-size:15px;font-weight:700;margin-bottom:8px}
+.game-hint{font-size:12px;color:var(--sub)}
+
+/* Toast */
+.toast{
+  position:fixed;top:20px;left:50%;transform:translateX(-50%);
+  background:var(--text);color:#fff;padding:10px 20px;border-radius:20px;
+  font-size:13px;font-weight:600;z-index:200;pointer-events:none;
+  animation:toastIn .35s ease,toastOut .35s ease 1.8s forwards;
+}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes toastOut{from{opacity:1}to{opacity:0}}
+
+/* 粒子 */
+.spark{
+  position:fixed;pointer-events:none;z-index:300;font-size:20px;
+  animation:sparkUp .9s ease-out forwards;
+}
+@keyframes sparkUp{
+  0%{opacity:1;transform:translate(0,0) scale(1)}
+  100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(.3)}
+}
+
+/* 暗色 */
+@media(prefers-color-scheme:dark){
+  :root{--bg:#13111c;--card:#1e1b2e;--text:#e8e4f0;--sub:#9b95b5}
+  .task{background:#1e1b2e}
+  .task.done{background:#1a2e22}
+  .stat-card{background:#1e1b2e}
+  .progress-wrap{background:#1e1b2e}
+  .buddy-msg{background:linear-gradient(135deg,#1e1b3a,#2a1a30)}
+  .reward-btn{background:#1e1b2e}
+  .sheet{background:#1e1b2e}
+  .set-row input,.set-row select{background:#2a2638;border-color:#3a3550;color:#e8e4f0}
+  .progress-bar{background:#2a2638}
+  .task-check{border-color:#3a3550}
+  .sheet-handle{background:#3a3550}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- 头部区域 -->
-        <header class="header">
-            <div class="user-info">
-                <div class="avatar">
-                    <i class="fas fa-user-graduate"></i>
-                </div>
-                <div class="user-details">
-                    <h1>语涵学习助手</h1>
-                    <p class="subtitle">八年级专属 · 智能学习计划</p>
-                </div>
-            </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-value" id="completed-count">0</span>
-                    <span class="stat-label">已完成</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="streak-days">0</span>
-                    <span class="stat-label">连续打卡</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="total-points">100</span>
-                    <span class="stat-label">学习币</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- 日期和进度 -->
-        <div class="date-section">
-            <div class="current-date">
-                <h2 id="current-date">2026年5月26日 星期二</h2>
-                <p class="day-type" id="day-type">工作日</p>
-            </div>
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
-                </div>
-                <div class="progress-text">
-                    <span id="progress-text">今日进度: 0%</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 激励语区域 -->
-        <div class="motivation-section">
-            <div class="motivation-card">
-                <i class="fas fa-star"></i>
-                <p id="motivation-text">今天也是闪闪发光的一天！✨</p>
-                <button class="refresh-motivation" onclick="refreshMotivation()">
-                    <i class="fas fa-redo"></i> 换一句
-                </button>
-            </div>
-        </div>
-
-        <!-- 任务列表 -->
-        <div class="tasks-section">
-            <h3><i class="fas fa-list-check"></i> 今日学习任务</h3>
-            <div class="tasks-container" id="tasks-container">
-                <!-- 任务将通过JS动态生成 -->
-            </div>
-        </div>
-
-        <!-- 娱乐奖励 -->
-        <div class="rewards-section">
-            <h3><i class="fas fa-gift"></i> 完成奖励</h3>
-            <div class="rewards-container">
-                <div class="reward-item" onclick="claimReward('music')">
-                    <i class="fas fa-music"></i>
-                    <span>解锁一首歌</span>
-                </div>
-                <div class="reward-item" onclick="claimReward('joke')">
-                    <i class="fas fa-laugh-squint"></i>
-                    <span>听个笑话</span>
-                </div>
-                <div class="reward-item" onclick="claimReward('meme')">
-                    <i class="fas fa-image"></i>
-                    <span>看个表情包</span>
-                </div>
-                <div class="reward-item" onclick="claimReward('game')">
-                    <i class="fas fa-gamepad"></i>
-                    <span>小游戏时间</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 编辑计划按钮 -->
-        <div class="edit-section">
-            <button class="edit-plan-btn" onclick="openEditModal()">
-                <i class="fas fa-edit"></i> 自定义我的计划
-            </button>
-        </div>
+<div class="container">
+  <div class="topbar">
+    <div class="greeting">
+      <span id="greet-time">下午好</span>
+      <b id="plan-title">语涵的学习搭子</b>
     </div>
-
-    <!-- 编辑计划模态框 -->
-    <div class="modal" id="edit-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-sliders-h"></i> 自定义学习计划</h3>
-                <button class="close-btn" onclick="closeEditModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>计划名称</label>
-                    <input type="text" id="plan-name" value="语涵学习助手" placeholder="给你的计划起个酷炫的名字">
-                </div>
-                <div class="form-group">
-                    <label>每日目标完成奖励</label>
-                    <input type="number" id="daily-reward" value="50" min="10" max="200">
-                    <span class="hint">学习币奖励数量</span>
-                </div>
-                <div class="form-group">
-                    <label>提醒音效</label>
-                    <select id="sound-effect">
-                        <option value="bell">清脆铃声</option>
-                        <option value="chime">风铃音</option>
-                        <option value="success">成功音效</option>
-                        <option value="none">无音效</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>主题颜色</label>
-                    <div class="color-options">
-                        <div class="color-option" style="background-color: #6a5acd;" onclick="selectColor('#6a5acd')"></div>
-                        <div class="color-option" style="background-color: #ff6b6b;" onclick="selectColor('#ff6b6b')"></div>
-                        <div class="color-option" style="background-color: #4ecdc4;" onclick="selectColor('#4ecdc4')"></div>
-                        <div class="color-option" style="background-color: #ffd166;" onclick="selectColor('#ffd166')"></div>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button class="save-btn" onclick="savePlanSettings()">保存设置</button>
-                    <button class="cancel-btn" onclick="closeEditModal()">取消</button>
-                </div>
-            </div>
-        </div>
+    <div class="mascot-wrap" onclick="tapMascot()">
+      <div class="mascot-bubble" id="mascot-bubble"></div>
+      <div class="mascot" id="mascot-face">🐱</div>
     </div>
+  </div>
 
-    <!-- 奖励展示模态框 -->
-    <div class="modal" id="reward-modal">
-        <div class="modal-content reward-content">
-            <div class="modal-header">
-                <h3 id="reward-title">奖励时间！</h3>
-                <button class="close-btn" onclick="closeRewardModal()">&times;</button>
-            </div>
-            <div class="modal-body" id="reward-body">
-                <!-- 奖励内容动态生成 -->
-            </div>
-        </div>
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-num purple" id="done-num">0</div><div class="stat-label">今日完成</div></div>
+    <div class="stat-card"><div class="stat-num pink" id="streak-num">0</div><div class="stat-label">连续天数</div></div>
+    <div class="stat-card"><div class="stat-num mint" id="coin-num">100</div><div class="stat-label">学习币</div></div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-top"><span>今日进度</span><span class="progress-pct" id="pct-text">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="pct-bar" style="width:0%"></div></div>
+  </div>
+
+  <div class="buddy-msg" onclick="refreshBuddy()">
+    <div class="buddy-avatar" id="buddy-emoji">🐱</div>
+    <div class="buddy-text">
+      <div class="name">你的学习搭子</div>
+      <div class="msg" id="buddy-msg">今天也是元气满满的一天！</div>
     </div>
+  </div>
 
-    <!-- 音效 -->
-    <audio id="complete-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
-    <audio id="reward-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" preload="auto"></audio>
+  <div class="section-title">📋 今日任务</div>
+  <div class="task-list" id="task-list"></div>
 
-    <script src="script.js"></script>
+  <div class="section-title">🎁 兑换奖励</div>
+  <div class="reward-grid">
+    <button class="reward-btn" onclick="openReward('music')"><span class="icon">🎵</span>解锁一首歌<span class="cost">5币</span></button>
+    <button class="reward-btn" onclick="openReward('meme')"><span class="icon">🤣</span>沙雕表情包<span class="cost">5币</span></button>
+    <button class="reward-btn" onclick="openReward('game')"><span class="icon">🎮</span>小游戏放松<span class="cost">10币</span></button>
+    <button class="reward-btn" onclick="openReward('theme')"><span class="icon">🎨</span>解锁新主题<span class="cost">30币</span></button>
+  </div>
+
+  <div class="bottom-actions">
+    <button class="btn btn-outline" onclick="openSettings()">⚙️ 自定义</button>
+    <button class="btn btn-solid" onclick="resetToday()">🔄 重置今日</button>
+  </div>
+</div>
+
+<!-- 设置弹窗 -->
+<div class="overlay" id="settings-overlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h3>自定义你的学习搭子</h3>
+    <div class="set-row"><label>计划名称</label><input id="set-name" placeholder="给你的计划起个名"></div>
+    <div class="set-row"><label>搭子昵称</label><input id="set-buddy" placeholder="给你的搭子起个名"></div>
+    <div class="set-row"><label>搭子形象</label><select id="set-mascot"></select></div>
+    <div class="set-row"><label>主题色</label><div class="color-pick" id="color-pick"></div></div>
+    <button class="btn btn-solid" style="width:100%;margin-top:8px" onclick="saveSettings()">保存</button>
+  </div>
+</div>
+
+<!-- 奖励弹窗 -->
+<div class="overlay" id="reward-overlay">
+  <div class="sheet" id="reward-sheet">
+    <div class="sheet-handle"></div>
+    <div class="reward-pop" id="reward-content"></div>
+  </div>
+</div>
+
+<script>
+// ============ 数据 ============
+const WEEKDAY_TASKS = [
+  {id:1,emoji:'📝',name:'完成校内全部作业',time:'放学~20:00',tag:'作业',tagCls:'tag-ot'},
+  {id:2,emoji:'🇬🇧',name:'英语专项：背默+语法',time:'20:00-21:10',tag:'英语',tagCls:'tag-en',days:[1,3,5]},
+  {id:3,emoji:'📖',name:'语文专项：背诵+刷题',time:'20:00-21:10',tag:'语文',tagCls:'tag-cn',days:[2,4]},
+];
+const SAT_TASKS = [
+  {id:4,emoji:'😴',name:'补觉休整，好好吃顿饭',time:'10:00起床',tag:'休息',tagCls:'tag-fr'},
+  {id:5,emoji:'🔬',name:'理化空中课堂+随堂练习',time:'10:00-11:00',tag:'理化',tagCls:'tag-ph'},
+  {id:6,emoji:'🧮',name:'线下数学补习',time:'13:00-17:00',tag:'数学',tagCls:'tag-ma'},
+  {id:7,emoji:'📚',name:'周末作业查缺补漏',time:'17:00-20:00',tag:'作业',tagCls:'tag-ot'},
+  {id:8,emoji:'🎮',name:'自由娱乐时间',time:'20:00之后',tag:'娱乐',tagCls:'tag-fr'},
+];
+const SUN_TASKS = [
+  {id:9,emoji:'🎨',name:'美术兴趣课',time:'09:00-11:30',tag:'美术',tagCls:'tag-ot'},
+  {id:10,emoji:'🍱',name:'午餐+午休',time:'11:30-13:30',tag:'休息',tagCls:'tag-fr'},
+  {id:11,emoji:'🇬🇧',name:'英语一对一补习',time:'14:00-16:00',tag:'英语',tagCls:'tag-en'},
+  {id:12,emoji:'📖',name:'语文背默+课外练习',time:'16:30-18:00',tag:'语文',tagCls:'tag-cn'},
+  {id:13,emoji:'✨',name:'全天学习结束，自由休息',time:'18:00之后',tag:'休息',tagCls:'tag-fr'},
+];
+
+const MASCOTS = ['🐱','🐶','🐰','🦊','🐼','🐨','🐸','🦄','🐙','🐣'];
+const COLORS = ['#7c6ff7','#f472b6','#34d399','#fbbf24','#60a5fa','#f87171','#a78bfa','#fb923c'];
+
+// 搭子语录——同龄人语气
+const BUDDY_MSGS = {
+  morning: [
+    '早啊！今天也是被学习选中的一天呢~',
+    '起床了起床了，卷起来！',
+    '新的一天，新的任务，冲！',
+    '早八人早八魂（虽然你不上早八）',
+  ],
+  idle: [
+    '在吗在吗在吗？看看任务？',
+    '摸鱼被我抓到了吧 👀',
+    '点一下任务就能完成哦，试试？',
+    '今天进度还是0诶，要不要开始第一个？',
+    '我在这儿等着你回来~等着你回来把那任务做~',
+  ],
+  progress: [
+    '不错不错，进度过半了！',
+    '稳！继续保持这个节奏',
+    '你今天状态可以啊',
+    '已经完成好几个了，休息一下？',
+  ],
+  almost: [
+    '就差最后一点了！',
+    '马上就能收工了，再坚持一下',
+    '胜利在望！',
+  ],
+  done: [
+    '全部完成！今天你是我的神！',
+    '收工！可以心安理得地躺平了',
+    '任务清零！奖励自己一下？',
+    '今天表现满分，明天继续~',
+  ],
+  tap: [
+    '别戳了别戳了，痒！',
+    '？',
+    '你戳我干嘛，去做任务啊',
+    '再戳我要生气了（并不会）',
+    '戳一次扣一个学习币（开玩笑的）',
+    '好啦好啦，我知道你在',
+  ]
+};
+
+// 奖励内容
+const REWARDS = {
+  music: {
+    emoji:'🎵',title:'今日推荐',
+    desc:'<p style="margin:4px 0">去网易云搜：<b>《我会等》- 承桓</b></p><p style="font-size:12px;color:var(--sub)">或者打开你的歌单随便听一首~</p>'
+  },
+  meme: {
+    emoji:'🤣',title:'今日份快乐',
+    desc:'<p style="font-size:28px;margin:8px 0">(╯°□°）╯︵ ┻━┻</p><p style="font-size:12px;color:var(--sub)">学习压力大的时候，掀个桌（虚拟的）</p>'
+  },
+  game: {emoji:'🎮',title:'小游戏',desc:'',isGame:true},
+  theme: {
+    emoji:'🎨',title:'新主题解锁！',
+    desc:'<p>已解锁一个新主题色</p><p style="font-size:12px;color:var(--sub)">去设置里换上新皮肤吧~</p>'
+  }
+};
+
+// ============ 状态 ============
+let completed = new Set();
+let coins = 100;
+let streak = 0;
+let themeColor = '#7c6ff7';
+let planTitle = '语涵的学习搭子';
+let buddyName = '学习搭子';
+let mascotEmoji = '🐱';
+let unlockedThemes = new Set(['#7c6ff7']);
+
+// ============ 初始化 ============
+function init(){
+  loadData();
+  updateGreeting();
+  renderTasks();
+  updateStats();
+  refreshBuddy();
+  applyTheme();
+  populateSettings();
+}
+function getToday(){return new Date().toISOString().split('T')[0]}
+function getDay(){return new Date().getDay()}
+
+function getTasks(){
+  const d = getDay();
+  if(d===0) return SUN_TASKS;
+  if(d===6) return SAT_TASKS;
+  return WEEKDAY_TASKS.filter(t=>!t.days||t.days.includes(d));
+}
+
+function renderTasks(){
+  const list = document.getElementById('task-list');
+  const tasks = getTasks();
+  list.innerHTML = tasks.map(t=>`
+    <div class="task ${completed.has(t.id)?'done':''}" onclick="toggleTask(${t.id},this)">
+      <div class="task-emoji">${t.emoji}</div>
+      <div class="task-info">
+        <div class="task-name">${t.name}</div>
+        <div class="task-time">🕐 ${t.time}<span class="task-tag ${t.tagCls}">${t.tag}</span></div>
+      </div>
+      <div class="task-check">✓</div>
+    </div>
+  `).join('');
+}
+
+function toggleTask(id,el){
+  if(completed.has(id)){
+    completed.delete(id);
+    el.classList.remove('done');
+    coins = Math.max(0, coins - 8);
+  } else {
+    completed.add(id);
+    el.classList.add('done');
+    coins += 8;
+    spawnSparks(el);
+    const msgs = ['拿下！','稳~','✅','+8','可以！','nice'];
+    toast(msgs[Math.floor(Math.random()*msgs.length)]);
+  }
+  updateStats();
+  saveData();
+  refreshBuddy();
+}
+
+function updateStats(){
+  const tasks = getTasks();
+  const done = tasks.filter(t=>completed.has(t.id)).length;
+  const pct = tasks.length ? Math.round(done/tasks.length*100) : 0;
+  document.getElementById('done-num').textContent = done;
+  document.getElementById('streak-num').textContent = streak;
+  document.getElementById('coin-num').textContent = coins;
+  document.getElementById('pct-text').textContent = pct+'%';
+  document.getElementById('pct-bar').style.width = pct+'%';
+}
+
+function updateGreeting(){
+  const h = new Date().getHours();
+  const g = h<12?'早上好':h<18?'下午好':'晚上好';
+  document.getElementById('greet-time').textContent = g;
+}
+
+function refreshBuddy(){
+  const tasks = getTasks();
+  const done = tasks.filter(t=>completed.has(t.id)).length;
+  const total = tasks.length;
+  let pool;
+  if(done===0) pool = BUDDY_MSGS.idle;
+  else if(done===total) pool = BUDDY_MSGS.done;
+  else if(done/total >= 0.8) pool = BUDDY_MSGS.almost;
+  else if(done/total >= 0.4) pool = BUDDY_MSGS.progress;
+  else pool = BUDDY_MSGS.idle;
+  const h = new Date().getHours();
+  if(h<10 && done===0) pool = BUDDY_MSGS.morning;
+  const msg = pool[Math.floor(Math.random()*pool.length)];
+  document.getElementById('buddy-msg').textContent = msg;
+  document.getElementById('buddy-emoji').textContent = mascotEmoji;
+  document.getElementById('mascot-face').textContent = mascotEmoji;
+  document.querySelector('.buddy-text .name').textContent = buddyName;
+}
+
+function tapMascot(){
+  const msgs = BUDDY_MSGS.tap;
+  const msg = msgs[Math.floor(Math.random()*msgs.length)];
+  const bubble = document.getElementById('mascot-bubble');
+  bubble.textContent = msg;
+  bubble.classList.add('show');
+  setTimeout(()=>bubble.classList.remove('show'), 2000);
+}
+
+// ============ 奖励 ============
+function openReward(type){
+  if(type==='theme'){
+    if(coins<30){toast('学习币不够哦，再攒攒~');return}
+    coins-=30;
+    const avail = [...COLORS].filter(c=>!unlockedThemes.has(c));
+    if(avail.length===0){toast('所有主题都已解锁！');coins+=30;return}
+    const pick = avail[Math.floor(Math.random()*avail.length)];
+    unlockedThemes.add(pick);
+    themeColor = pick;
+    applyTheme();
+    updateStats();saveData();
+    showRewardPopup('🎨','新主题解锁！','<p>去设置里可以切换主题~</p>');
+    return;
+  }
+  const r = REWARDS[type];
+  if(!r) return;
+  if(coins<5 && type!=='game'){toast('学习币不够哦~');return}
+  if(type==='game' && coins<10){toast('需要10个学习币~');return}
+  coins -= (type==='game'?10:5);
+  updateStats();saveData();
+  if(r.isGame){showGamePopup();return}
+  showRewardPopup(r.emoji,r.title,r.desc);
+}
+
+function showRewardPopup(emoji,title,desc){
+  document.getElementById('reward-content').innerHTML = `
+    <div class="big-emoji">${emoji}</div>
+    <div class="title">${title}</div>
+    <div class="desc">${desc}</div>
+    <button class="btn btn-solid" style="width:100%" onclick="closeReward()">收下！</button>
+  `;
+  document.getElementById('reward-overlay').classList.add('show');
+}
+
+// ============ 小游戏：记忆翻牌 ============
+let gameActive = false;
+let gameCards = [];
+let gameFlipped = [];
+let gameMatched = 0;
+let gameMoves = 0;
+
+function showGamePopup(){
+  const overlay = document.getElementById('reward-overlay');
+  const sheet = document.getElementById('reward-sheet');
+  sheet.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="game-area">
+      <h3 style="margin-bottom:8px">🃏 记忆翻牌</h3>
+      <p class="game-hint">找出所有配对，尽量少翻牌！</p>
+      <div class="game-score" id="game-score">步数: 0 | 配对: 0/4</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:280px;margin:0 auto" id="game-grid"></div>
+      <button class="btn btn-solid" style="width:100%;margin-top:12px" onclick="closeReward()">不玩了</button>
+    </div>
+  `;
+  overlay.classList.add('show');
+  initGame();
+}
+
+function initGame(){
+  const emojis = ['🌟','💎','🔥','🎯','🌟','💎','🔥','🎯'];
+  gameCards = emojis.sort(()=>Math.random()-.5);
+  gameFlipped = [];
+  gameMatched = 0;
+  gameMoves = 0;
+  gameActive = true;
+  renderGameGrid();
+}
+
+function renderGameGrid(){
+  const grid = document.getElementById('game-grid');
+  if(!grid) return;
+  grid.innerHTML = gameCards.map((e,i)=>{
+    const flipped = gameFlipped.includes(i);
+    const matched = gameMatched > 0 && gameCards[i] === gameCards[gameFlipped[0]] && gameFlipped.includes(i);
+    return `<div style="aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;transition:all .2s;${flipped||matched?'background:#e8e4f8':'background:linear-gradient(135deg,#7c6ff7,#a78bfa);color:transparent'}" onclick="flipCard(${i})">${flipped||matched?e:'?'}</div>`;
+  }).join('');
+  document.getElementById('game-score').textContent = `步数: ${gameMoves} | 配对: ${gameMatched}/4`;
+}
+
+function flipCard(i){
+  if(!gameActive) return;
+  if(gameFlipped.includes(i)) return;
+  if(gameFlipped.length >= 2) return;
+  gameFlipped.push(i);
+  renderGameGrid();
+  if(gameFlipped.length === 2){
+    gameMoves++;
+    const [a,b] = gameFlipped;
+    if(gameCards[a] === gameCards[b]){
+      gameMatched++;
+      gameFlipped = [];
+      renderGameGrid();
+      if(gameMatched === 4){
+        gameActive = false;
+        const bonus = gameMoves <= 6 ? 15 : gameMoves <= 10 ? 10 : 5;
+        coins += bonus;
+        updateStats();saveData();
+        setTimeout(()=>{
+          document.getElementById('game-score').textContent = `完成！步数: ${gameMoves} | 奖励 +${bonus}币`;
+        },300);
+      }
+    } else {
+      setTimeout(()=>{gameFlipped=[];renderGameGrid()},600);
+    }
+  }
+}
+
+// ============ 设置 ============
+function populateSettings(){
+  document.getElementById('set-name').value = planTitle;
+  document.getElementById('set-buddy').value = buddyName;
+  const sel = document.getElementById('set-mascot');
+  sel.innerHTML = MASCOTS.map(m=>`<option value="${m}" ${m===mascotEmoji?'selected':''}>${m}</option>`).join('');
+  const pick = document.getElementById('color-pick');
+  pick.innerHTML = COLORS.map(c=>`<div class="color-dot${c===themeColor?' active':''}${unlockedThemes.has(c)?'':' style="opacity:.3;pointer-events:none"'}" style="background:${c}" onclick="pickColor('${c}')"></div>`).join('');
+}
+
+function pickColor(c){
+  if(!unlockedThemes.has(c)) return;
+  themeColor = c;
+  applyTheme();
+  populateSettings();
+}
+
+function openSettings(){
+  populateSettings();
+  document.getElementById('settings-overlay').classList.add('show');
+}
+
+function saveSettings(){
+  planTitle = document.getElementById('set-name').value || '语涵的学习搭子';
+  buddyName = document.getElementById('set-buddy').value || '学习搭子';
+  mascotEmoji = document.getElementById('set-mascot').value;
+  document.getElementById('plan-title').textContent = planTitle;
+  document.title = planTitle;
+  refreshBuddy();
+  saveData();
+  closeSettings();
+  toast('保存成功！');
+}
+
+function closeSettings(){document.getElementById('settings-overlay').classList.remove('show')}
+function closeReward(){document.getElementById('reward-overlay').classList.remove('show')}
+
+// ============ 主题 ============
+function applyTheme(){
+  document.documentElement.style.setProperty('--purple',themeColor);
+}
+
+// ============ 粒子 ============
+function spawnSparks(el){
+  const rect = el.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+  const emojis = ['✨','⭐','💫','🌟','🎉'];
+  for(let i=0;i<6;i++){
+    const s = document.createElement('div');
+    s.className = 'spark';
+    s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    s.style.left = cx+'px';s.style.top = cy+'px';
+    const a = Math.random()*Math.PI*2, d = 40+Math.random()*60;
+    s.style.setProperty('--sx',Math.cos(a)*d+'px');
+    s.style.setProperty('--sy',Math.sin(a)*d+'px');
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),900);
+  }
+}
+
+// ============ Toast ============
+function toast(msg){
+  const t = document.createElement('div');t.className='toast';t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2200);
+}
+
+// ============ 存储 ============
+function saveData(){
+  const d = {
+    completed: [...completed],coins,streak,themeColor,planTitle,buddyName,
+    mascotEmoji,unlockedThemes:[...unlockedThemes],
+    lastDate: getToday()
+  };
+  localStorage.setItem('yuhan_study',JSON.stringify(d));
+}
+function loadData(){
+  try{
+    const raw = localStorage.getItem('yuhan_study');
+    if(!raw) return;
+    const d = JSON.parse(raw);
+    completed = new Set(d.completed||[]);
+    coins = d.coins??100;
+    themeColor = d.themeColor||'#7c6ff7';
+    planTitle = d.planTitle||'语涵的学习搭子';
+    buddyName = d.buddyName||'学习搭子';
+    mascotEmoji = d.mascotEmoji||'🐱';
+    unlockedThemes = new Set(d.unlockedThemes||['#7c6ff7']);
+    // streak
+    const today = getToday();
+    if(d.lastDate === today){streak = d.streak||0}
+    else if(d.lastDate && isYesterday(d.lastDate,today)){streak = (d.streak||0)+1}
+    else {streak = 0}
+    document.getElementById('plan-title').textContent = planTitle;
+    document.title = planTitle;
+  }catch(e){}
+}
+function isYesterday(a,b){
+  const d1=new Date(a+'T00:00:00'),d2=new Date(b+'T00:00:00');
+  return Math.round((d2-d1)/86400000)===1;
+}
+function resetToday(){
+  if(!confirm('确定要重置今天的完成记录吗？')) return;
+  completed.clear();
+  updateStats();renderTasks();saveData();refreshBuddy();
+  toast('已重置');
+}
+
+// 弹窗关闭
+document.getElementById('settings-overlay').addEventListener('click',function(e){if(e.target===this)closeSettings()});
+document.getElementById('reward-overlay').addEventListener('click',function(e){if(e.target===this)closeReward()});
+
+init();
+</script>
 </body>
 </html>
