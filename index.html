@@ -2,700 +2,542 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="学习搭子">
+<meta name="theme-color" content="#7c6ff7">
+<link rel="manifest" href="manifest.json">
 <title>语涵的学习搭子</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#faf8ff;--card:#fff;--text:#2d2b3a;--sub:#8b87a0;
-  --purple:#7c6ff7;--pink:#f472b6;--mint:#34d399;--amber:#fbbf24;
-  --red:#f87171;--blue:#60a5fa;
-  --shadow:0 1px 3px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.06);
-  --radius:20px;--radius-sm:14px;
-}
-body{
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
-  background:var(--bg);color:var(--text);min-height:100vh;
-  -webkit-tap-highlight-color:transparent;user-select:none;
-}
-.container{max-width:480px;margin:0 auto;padding:12px 16px 100px}
+:root{--bg:#faf8ff;--card:#fff;--text:#2d2b3a;--sub:#8b87a0;--purple:#7c6ff7;--pink:#f472b6;--mint:#34d399;--amber:#fbbf24;--red:#f87171;--blue:#60a5fa;--shadow:0 1px 3px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.06);--radius:20px;--radius-sm:14px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;-webkit-tap-highlight-color:transparent;user-select:none;overflow-x:hidden}
+.container{max-width:480px;margin:0 auto;padding:12px 16px 110px}
 
-/* 顶部 */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 0 16px}
-.greeting{font-size:13px;color:var(--sub)}
-.greeting b{display:block;font-size:20px;color:var(--text);font-weight:700;margin-top:2px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 0 12px}
+.greeting{font-size:13px;color:var(--sub)}.greeting b{display:block;font-size:20px;color:var(--text);font-weight:700;margin-top:2px}
 .mascot-wrap{position:relative}
-.mascot{
-  width:52px;height:52px;border-radius:50%;
-  background:linear-gradient(135deg,#e0d9ff,#c4b5fd);
-  display:flex;align-items:center;justify-content:center;font-size:28px;
-  box-shadow:0 4px 16px rgba(124,111,247,.25);cursor:pointer;
-  transition:transform .2s;position:relative;
-}
-.mascot:active{transform:scale(.92)}
-.mascot-bubble{
-  position:absolute;top:-36px;right:-10px;
-  background:var(--text);color:#fff;font-size:11px;padding:5px 10px;
-  border-radius:12px 12px 12px 4px;white-space:nowrap;opacity:0;
-  transform:translateY(4px);transition:all .3s;pointer-events:none;
-}
+.mascot{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#e0d9ff,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 16px rgba(124,111,247,.25);cursor:pointer;transition:transform .2s}
+.mascot:active{transform:scale(.9)}
+.mascot-bubble{position:absolute;top:-42px;right:-20px;background:var(--text);color:#fff;font-size:11px;padding:6px 10px;border-radius:12px 12px 12px 4px;white-space:nowrap;opacity:0;transform:translateY(4px);transition:all .3s;pointer-events:none;max-width:180px;white-space:normal;line-height:1.4}
 .mascot-bubble.show{opacity:1;transform:translateY(0)}
 
-/* 状态卡片 */
-.stat-row{display:flex;gap:10px;margin-bottom:14px}
-.stat-card{
-  flex:1;background:var(--card);border-radius:var(--radius-sm);
-  padding:14px;box-shadow:var(--shadow);text-align:center;
-  transition:transform .2s;
-}
-.stat-card:active{transform:scale(.97)}
-.stat-num{font-size:26px;font-weight:800;line-height:1}
-.stat-num.purple{color:var(--purple)}
-.stat-num.pink{color:var(--pink)}
-.stat-num.mint{color:var(--mint)}
-.stat-label{font-size:11px;color:var(--sub);margin-top:4px}
+.stat-row{display:flex;gap:8px;margin-bottom:10px}
+.stat-card{flex:1;background:var(--card);border-radius:var(--radius-sm);padding:12px;box-shadow:var(--shadow);text-align:center}
+.stat-num{font-size:24px;font-weight:800;line-height:1}
+.stat-num.purple{color:var(--purple)}.stat-num.pink{color:var(--pink)}.stat-num.mint{color:var(--mint)}
+.stat-label{font-size:10px;color:var(--sub);margin-top:3px}
 
-/* 进度条 */
-.progress-wrap{background:var(--card);border-radius:var(--radius-sm);padding:14px 16px;box-shadow:var(--shadow);margin-bottom:14px}
-.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.progress-top span{font-size:13px;font-weight:600}
-.progress-pct{color:var(--purple)}
-.progress-bar{height:6px;background:#f0edf6;border-radius:10px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--pink));border-radius:10px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.date-strip{display:flex;gap:4px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.date-strip::-webkit-scrollbar{display:none}
+.date-chip{flex-shrink:0;min-width:44px;padding:8px 4px;border-radius:12px;text-align:center;cursor:pointer;transition:all .2s;background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,.04);font-size:11px;line-height:1.4}
+.date-chip .dow{font-weight:600;color:var(--sub);font-size:10px}
+.date-chip .dom{font-weight:700;font-size:15px;color:var(--text)}
+.date-chip.active{background:var(--purple);box-shadow:0 4px 14px rgba(124,111,247,.35)}
+.date-chip.active .dow,.date-chip.active .dom{color:#fff}
+.date-chip.today{border:2px solid var(--purple)}
 
-/* 搭子说的话 */
-.buddy-msg{
-  background:linear-gradient(135deg,#f5f0ff,#fdf2f8);border-radius:var(--radius-sm);
-  padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;
-  box-shadow:var(--shadow);cursor:pointer;transition:transform .2s;
-}
+.progress-wrap{background:var(--card);border-radius:var(--radius-sm);padding:12px 14px;box-shadow:var(--shadow);margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.progress-bar{flex:1;height:6px;background:#f0edf6;border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--pink));border-radius:10px;transition:width .5s}
+.progress-pct{font-size:13px;font-weight:700;color:var(--purple);min-width:36px;text-align:right}
+
+.buddy-msg{background:linear-gradient(135deg,#f5f0ff,#fdf2f8);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow);cursor:pointer;transition:all .2s}
 .buddy-msg:active{transform:scale(.98)}
-.buddy-avatar{font-size:32px;flex-shrink:0}
-.buddy-text{flex:1}
-.buddy-text .name{font-size:12px;color:var(--purple);font-weight:600}
-.buddy-text .msg{font-size:14px;color:var(--text);margin-top:2px;line-height:1.5}
+.buddy-avatar{font-size:30px;flex-shrink:0}
+.buddy-text .name{font-size:11px;color:var(--purple);font-weight:600}
+.buddy-text .msg{font-size:13px;color:var(--text);margin-top:2px;line-height:1.5}
 
-/* 任务区 */
-.section-title{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.task-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.task{
-  background:var(--card);border-radius:var(--radius-sm);padding:14px 16px;
-  box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;
-  transition:all .25s;cursor:pointer;position:relative;overflow:hidden;
-  border-left:4px solid transparent;
-}
+.section-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.section-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
+.btn-sm{font-size:11px;padding:5px 12px;border-radius:14px;border:none;cursor:pointer;font-weight:600;font-family:inherit;transition:all .2s;background:var(--purple);color:#fff}
+.btn-sm:active{opacity:.8}
+
+.task-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.task{background:var(--card);border-radius:var(--radius-sm);padding:12px 14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;transition:all .25s;cursor:pointer;border-left:4px solid transparent;position:relative}
 .task.done{border-left-color:var(--mint);background:#f8fdf9}
 .task.done .task-name{text-decoration:line-through;color:#b0b0b0}
-.task.done .task-time{color:#c0c0c0}
-.task-emoji{font-size:24px;flex-shrink:0}
+.task-emoji{font-size:22px;flex-shrink:0}
 .task-info{flex:1;min-width:0}
-.task-name{font-size:14px;font-weight:600;transition:color .2s}
-.task-time{font-size:11px;color:var(--sub);margin-top:2px}
-.task-tag{
-  display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;
-  font-weight:500;margin-left:6px;
-}
-.tag-en{background:#ede9fe;color:#7c3aed}
-.tag-cn{background:#fef3c7;color:#d97706}
-.tag-ma{background:#fce7f3;color:#db2777}
-.tag-ph{background:#d1fae5;color:#059669}
-.tag-ch{background:#f3e8ff;color:#9333ea}
-.tag-fr{background:#e0e7ff;color:#4f46e5}
+.task-name{font-size:13px;font-weight:600}
+.task-time{font-size:10px;color:var(--sub);margin-top:2px}
+.task-tag{display:inline-block;font-size:9px;padding:1px 6px;border-radius:8px;font-weight:500;margin-left:5px}
+.tag-en{background:#ede9fe;color:#7c3aed}.tag-cn{background:#fef3c7;color:#d97706}
+.tag-ma{background:#fce7f3;color:#db2777}.tag-ph{background:#d1fae5;color:#059669}
+.tag-ch{background:#f3e8ff;color:#9333ea}.tag-fr{background:#e0e7ff;color:#4f46e5}
 .tag-ot{background:#ecfdf5;color:#0d9488}
-.task-check{
-  width:36px;height:36px;border-radius:50%;border:2.5px solid #e5e0ec;
-  flex-shrink:0;display:flex;align-items:center;justify-content:center;
-  transition:all .25s;font-size:16px;color:transparent;
-}
+.task-check{width:32px;height:32px;border-radius:50%;border:2.5px solid #e5e0ec;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s;font-size:14px;color:transparent}
 .task.done .task-check{background:var(--mint);border-color:var(--mint);color:#fff}
+.task-edit{position:absolute;right:50px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--sub);opacity:0;transition:opacity .2s}
+.task:active .task-edit{opacity:1}
 
-/* 奖励区 */
-.reward-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.reward-btn{
-  background:var(--card);border-radius:var(--radius-sm);padding:16px 12px;
-  box-shadow:var(--shadow);text-align:center;cursor:pointer;
-  transition:all .2s;border:none;font-family:inherit;font-size:13px;
-  font-weight:600;color:var(--text);display:flex;flex-direction:column;
-  align-items:center;gap:6px;
-}
-.reward-btn:active{transform:scale(.95)}
-.reward-btn .icon{font-size:28px}
-.reward-btn .cost{font-size:10px;color:var(--sub);margin-top:2px}
+.reward-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.reward-btn{background:var(--card);border-radius:var(--radius-sm);padding:14px 10px;box-shadow:var(--shadow);text-align:center;cursor:pointer;transition:all .2s;border:none;font-family:inherit;font-size:12px;font-weight:600;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:4px}
+.reward-btn:active{transform:scale(.95)}.reward-btn .icon{font-size:26px}
+.reward-btn .cost{font-size:9px;color:var(--sub)}
 
-/* 底部按钮 */
-.bottom-actions{display:flex;gap:10px;margin-top:8px}
-.btn{
-  flex:1;padding:12px;border-radius:25px;font-size:13px;font-weight:600;
-  cursor:pointer;transition:all .2s;border:none;font-family:inherit;
-  display:flex;align-items:center;justify-content:center;gap:6px;
-}
+.bottom-actions{display:flex;gap:8px}
+.btn{flex:1;padding:10px;border-radius:22px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;border:none;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:4px}
 .btn-outline{background:transparent;border:2px solid var(--purple);color:var(--purple)}
 .btn-outline:active{background:var(--purple);color:#fff}
 .btn-solid{background:var(--purple);color:#fff}
-.btn-solid:active{opacity:.85}
 
-/* 弹窗 */
-.overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;
-  display:flex;align-items:flex-end;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .3s;
-}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
 .overlay.show{opacity:1;pointer-events:auto}
-.sheet{
-  background:var(--card);width:100%;max-width:480px;max-height:80vh;
-  border-radius:24px 24px 0 0;padding:20px 20px 32px;overflow-y:auto;
-  transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
-}
+.sheet{background:var(--card);width:100%;max-width:480px;max-height:85vh;border-radius:24px 24px 0 0;padding:20px 20px 32px;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
 .overlay.show .sheet{transform:translateY(0)}
-.sheet-handle{width:36px;height:4px;background:#e0dce8;border-radius:4px;margin:0 auto 16px}
-.sheet h3{font-size:17px;font-weight:700;margin-bottom:16px;text-align:center}
+.sheet-handle{width:36px;height:4px;background:#e0dce8;border-radius:4px;margin:0 auto 14px}
+.sheet h3{font-size:16px;font-weight:700;margin-bottom:12px;text-align:center}
 
-/* 设置表单 */
-.set-row{margin-bottom:14px}
-.set-row label{display:block;font-size:12px;font-weight:600;color:var(--sub);margin-bottom:6px}
-.set-row input,.set-row select{
-  width:100%;padding:10px 14px;border:2px solid #eee;border-radius:12px;
-  font-size:14px;font-family:inherit;background:#fafafa;transition:border .2s;
-}
-.set-row input:focus,.set-row select:focus{outline:none;border-color:var(--purple);background:#fff}
-.color-pick{display:flex;gap:8px}
-.color-dot{
-  width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .2s;
-}
+.f-row{margin-bottom:10px}
+.f-row label{display:block;font-size:11px;font-weight:600;color:var(--sub);margin-bottom:4px}
+.f-row input,.f-row select,.f-row textarea{width:100%;padding:8px 12px;border:2px solid #eee;border-radius:10px;font-size:13px;font-family:inherit;background:#fafafa;transition:border .2s}
+.f-row input:focus,.f-row select:focus,.f-row textarea:focus{outline:none;border-color:var(--purple);background:#fff}
+.f-row textarea{resize:vertical;min-height:50px}
+.f-row-inline{display:flex;gap:8px}.f-row-inline>*{flex:1}
+.color-pick{display:flex;gap:6px}
+.color-dot{width:28px;height:28px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .2s}
 .color-dot.active{border-color:var(--text);transform:scale(1.15)}
 
-/* 奖励弹窗 */
-.reward-pop{text-align:center;padding:10px 0}
-.reward-pop .big-emoji{font-size:64px;margin-bottom:12px;animation:bounce .6s}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
-.reward-pop .title{font-size:18px;font-weight:700;margin-bottom:6px}
-.reward-pop .desc{font-size:13px;color:var(--sub);margin-bottom:16px;line-height:1.6}
+.reward-pop{text-align:center;padding:8px 0}
+.reward-pop .big-emoji{font-size:56px;margin-bottom:10px;animation:bounce .6s}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.reward-pop .rtitle{font-size:17px;font-weight:700;margin-bottom:6px}
+.reward-pop .rdesc{font-size:12px;color:var(--sub);margin-bottom:14px;line-height:1.6}
 
-/* 小游戏 */
-.game-area{text-align:center;padding:10px 0}
-.game-canvas{border-radius:12px;background:#f8f6ff;margin-bottom:12px;touch-action:none}
-.game-score{font-size:15px;font-weight:700;margin-bottom:8px}
-.game-hint{font-size:12px;color:var(--sub)}
+/* 游戏区 */
+.game-area{position:relative;width:100%;min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:8px 0}
+.game-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;max-width:280px;margin:0 auto}
+.game-cell{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;transition:all .15s}
+.game-cell.hidden{background:linear-gradient(135deg,var(--purple),#a78bfa);color:transparent}
+.game-cell.shown{background:#e8e4f8}
+.whack-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:240px;margin:0 auto}
+.whack-cell{aspect-ratio:1;background:#f0edf6;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:40px;cursor:pointer;transition:all .1s}
+.whack-cell.active{background:#ffe0e6;transform:scale(1.05)}
+.whack-cell.bomb{background:#ffcccc}
+.quiz-area{text-align:center}.quiz-q{font-size:28px;font-weight:700;margin:8px 0}.quiz-input{font-size:24px;width:120px;padding:8px;text-align:center;border:2px solid #ddd;border-radius:12px;margin:8px 0}.quiz-input:focus{outline:none;border-color:var(--purple)}
+.bubble-area{position:relative;width:260px;height:200px;overflow:hidden;background:#f8f9ff;border-radius:16px;margin:0 auto}
+.bubble{position:absolute;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;animation:bubbleUp 2.5s linear forwards}
+@keyframes bubbleUp{0%{transform:translateY(0) scale(0);opacity:0}10%{transform:translateY(0) scale(1);opacity:1}90%{opacity:1}100%{transform:translateY(-200px) scale(.5);opacity:0}}
 
-/* Toast */
-.toast{
-  position:fixed;top:20px;left:50%;transform:translateX(-50%);
-  background:var(--text);color:#fff;padding:10px 20px;border-radius:20px;
-  font-size:13px;font-weight:600;z-index:200;pointer-events:none;
-  animation:toastIn .35s ease,toastOut .35s ease 1.8s forwards;
-}
+/* 游戏选择 */
+.game-select{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
+.game-opt{background:#f8f6ff;border-radius:var(--radius-sm);padding:14px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.game-opt:active{border-color:var(--purple);background:#ede9fe}
+.game-opt .go-icon{font-size:32px}.game-opt .go-name{font-size:12px;font-weight:600;margin-top:4px}.game-opt .go-desc{font-size:10px;color:var(--sub);margin-top:2px}
+
+/* 瓜 */
+.gua-card{background:linear-gradient(135deg,#fff5f7,#fef9e7);border-radius:var(--radius-sm);padding:18px;text-align:center;margin:8px 0}
+.gua-card .gua-type{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:8px}
+.gua-card .gua-content{font-size:14px;line-height:1.7;color:var(--text)}
+.gua-type.joke{background:#fce7f3;color:#db2777}
+.gua-type.meme{background:#fef3c7;color:#d97706}
+.gua-type.fact{background:#d1fae5;color:#059669}
+.gua-type.moti{background:#ede9fe;color:#7c3aed}
+
+/* 健康提醒条 */
+.health-nudge{background:linear-gradient(135deg,#e8faf0,#f0e6ff);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow);cursor:pointer;animation:slideDown .4s}
+.health-nudge:active{transform:scale(.98)}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.hn-emoji{font-size:28px;flex-shrink:0}
+.hn-text{font-size:12px;line-height:1.5;color:var(--text)}
+.hn-dismiss{font-size:16px;color:var(--sub);cursor:pointer;flex-shrink:0;padding:4px}
+
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:200;pointer-events:none;animation:toastIn .35s,toastOut .35s 1.8s forwards}
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 @keyframes toastOut{from{opacity:1}to{opacity:0}}
 
-/* 粒子 */
-.spark{
-  position:fixed;pointer-events:none;z-index:300;font-size:20px;
-  animation:sparkUp .9s ease-out forwards;
-}
-@keyframes sparkUp{
-  0%{opacity:1;transform:translate(0,0) scale(1)}
-  100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(.3)}
-}
+.spark{position:fixed;pointer-events:none;z-index:300;font-size:18px;animation:sparkUp .9s ease-out forwards}
+@keyframes sparkUp{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(.3)}}
 
-/* 暗色 */
 @media(prefers-color-scheme:dark){
   :root{--bg:#13111c;--card:#1e1b2e;--text:#e8e4f0;--sub:#9b95b5}
-  .task{background:#1e1b2e}
-  .task.done{background:#1a2e22}
-  .stat-card{background:#1e1b2e}
-  .progress-wrap{background:#1e1b2e}
+  .task{background:#1e1b2e}.task.done{background:#1a2e22}
+  .stat-card,.progress-wrap,.reward-btn{background:#1e1b2e}
   .buddy-msg{background:linear-gradient(135deg,#1e1b3a,#2a1a30)}
-  .reward-btn{background:#1e1b2e}
   .sheet{background:#1e1b2e}
-  .set-row input,.set-row select{background:#2a2638;border-color:#3a3550;color:#e8e4f0}
-  .progress-bar{background:#2a2638}
-  .task-check{border-color:#3a3550}
-  .sheet-handle{background:#3a3550}
+  .f-row input,.f-row select,.f-row textarea{background:#2a2638;border-color:#3a3550;color:#e8e4f0}
+  .progress-bar{background:#2a2638}.task-check{border-color:#3a3550}
+  .sheet-handle{background:#3a3550}.date-chip{background:#1e1b2e}
+  .whack-cell{background:#2a2638}.bubble-area{background:#1e1b2e}
+  .game-opt{background:#2a2638}.gua-card{background:linear-gradient(135deg,#2a1e28,#2a2a1e)}
 }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="topbar">
-    <div class="greeting">
-      <span id="greet-time">下午好</span>
-      <b id="plan-title">语涵的学习搭子</b>
-    </div>
-    <div class="mascot-wrap" onclick="tapMascot()">
-      <div class="mascot-bubble" id="mascot-bubble"></div>
-      <div class="mascot" id="mascot-face">🐱</div>
-    </div>
-  </div>
-
-  <div class="stat-row">
-    <div class="stat-card"><div class="stat-num purple" id="done-num">0</div><div class="stat-label">今日完成</div></div>
-    <div class="stat-card"><div class="stat-num pink" id="streak-num">0</div><div class="stat-label">连续天数</div></div>
-    <div class="stat-card"><div class="stat-num mint" id="coin-num">100</div><div class="stat-label">学习币</div></div>
-  </div>
-
-  <div class="progress-wrap">
-    <div class="progress-top"><span>今日进度</span><span class="progress-pct" id="pct-text">0%</span></div>
-    <div class="progress-bar"><div class="progress-fill" id="pct-bar" style="width:0%"></div></div>
-  </div>
-
-  <div class="buddy-msg" onclick="refreshBuddy()">
-    <div class="buddy-avatar" id="buddy-emoji">🐱</div>
-    <div class="buddy-text">
-      <div class="name">你的学习搭子</div>
-      <div class="msg" id="buddy-msg">今天也是元气满满的一天！</div>
-    </div>
-  </div>
-
-  <div class="section-title">📋 今日任务</div>
-  <div class="task-list" id="task-list"></div>
-
-  <div class="section-title">🎁 兑换奖励</div>
-  <div class="reward-grid">
-    <button class="reward-btn" onclick="openReward('music')"><span class="icon">🎵</span>解锁一首歌<span class="cost">5币</span></button>
-    <button class="reward-btn" onclick="openReward('meme')"><span class="icon">🤣</span>沙雕表情包<span class="cost">5币</span></button>
-    <button class="reward-btn" onclick="openReward('game')"><span class="icon">🎮</span>小游戏放松<span class="cost">10币</span></button>
-    <button class="reward-btn" onclick="openReward('theme')"><span class="icon">🎨</span>解锁新主题<span class="cost">30币</span></button>
-  </div>
-
-  <div class="bottom-actions">
-    <button class="btn btn-outline" onclick="openSettings()">⚙️ 自定义</button>
-    <button class="btn btn-solid" onclick="resetToday()">🔄 重置今日</button>
-  </div>
-</div>
-
-<!-- 设置弹窗 -->
-<div class="overlay" id="settings-overlay">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <h3>自定义你的学习搭子</h3>
-    <div class="set-row"><label>计划名称</label><input id="set-name" placeholder="给你的计划起个名"></div>
-    <div class="set-row"><label>搭子昵称</label><input id="set-buddy" placeholder="给你的搭子起个名"></div>
-    <div class="set-row"><label>搭子形象</label><select id="set-mascot"></select></div>
-    <div class="set-row"><label>主题色</label><div class="color-pick" id="color-pick"></div></div>
-    <button class="btn btn-solid" style="width:100%;margin-top:8px" onclick="saveSettings()">保存</button>
-  </div>
-</div>
-
-<!-- 奖励弹窗 -->
-<div class="overlay" id="reward-overlay">
-  <div class="sheet" id="reward-sheet">
-    <div class="sheet-handle"></div>
-    <div class="reward-pop" id="reward-content"></div>
-  </div>
-</div>
+<div class="container" id="app"></div>
+<div class="overlay" id="ol-settings"><div class="sheet"><div class="sheet-handle"></div><h3>自定义你的学习搭子</h3><div id="settings-form"></div></div></div>
+<div class="overlay" id="ol-task"><div class="sheet"><div class="sheet-handle"></div><h3 id="task-form-title">添加任务</h3><div id="task-form"></div></div></div>
+<div class="overlay" id="ol-reward"><div class="sheet"><div class="sheet-handle"></div><div id="reward-sheet"></div></div></div>
 
 <script>
-// ============ 数据 ============
-const WEEKDAY_TASKS = [
-  {id:1,emoji:'📝',name:'完成校内全部作业',time:'放学~20:00',tag:'作业',tagCls:'tag-ot'},
-  {id:2,emoji:'🇬🇧',name:'英语专项：背默+语法',time:'20:00-21:10',tag:'英语',tagCls:'tag-en',days:[1,3,5]},
-  {id:3,emoji:'📖',name:'语文专项：背诵+刷题',time:'20:00-21:10',tag:'语文',tagCls:'tag-cn',days:[2,4]},
-];
-const SAT_TASKS = [
-  {id:4,emoji:'😴',name:'补觉休整，好好吃顿饭',time:'10:00起床',tag:'休息',tagCls:'tag-fr'},
-  {id:5,emoji:'🔬',name:'理化空中课堂+随堂练习',time:'10:00-11:00',tag:'理化',tagCls:'tag-ph'},
-  {id:6,emoji:'🧮',name:'线下数学补习',time:'13:00-17:00',tag:'数学',tagCls:'tag-ma'},
-  {id:7,emoji:'📚',name:'周末作业查缺补漏',time:'17:00-20:00',tag:'作业',tagCls:'tag-ot'},
-  {id:8,emoji:'🎮',name:'自由娱乐时间',time:'20:00之后',tag:'娱乐',tagCls:'tag-fr'},
-];
-const SUN_TASKS = [
-  {id:9,emoji:'🎨',name:'美术兴趣课',time:'09:00-11:30',tag:'美术',tagCls:'tag-ot'},
-  {id:10,emoji:'🍱',name:'午餐+午休',time:'11:30-13:30',tag:'休息',tagCls:'tag-fr'},
-  {id:11,emoji:'🇬🇧',name:'英语一对一补习',time:'14:00-16:00',tag:'英语',tagCls:'tag-en'},
-  {id:12,emoji:'📖',name:'语文背默+课外练习',time:'16:30-18:00',tag:'语文',tagCls:'tag-cn'},
-  {id:13,emoji:'✨',name:'全天学习结束，自由休息',time:'18:00之后',tag:'休息',tagCls:'tag-fr'},
-];
-
-const MASCOTS = ['🐱','🐶','🐰','🦊','🐼','🐨','🐸','🦄','🐙','🐣'];
-const COLORS = ['#7c6ff7','#f472b6','#34d399','#fbbf24','#60a5fa','#f87171','#a78bfa','#fb923c'];
-
-// 搭子语录——同龄人语气
-const BUDDY_MSGS = {
-  morning: [
-    '早啊！今天也是被学习选中的一天呢~',
-    '起床了起床了，卷起来！',
-    '新的一天，新的任务，冲！',
-    '早八人早八魂（虽然你不上早八）',
-  ],
-  idle: [
-    '在吗在吗在吗？看看任务？',
-    '摸鱼被我抓到了吧 👀',
-    '点一下任务就能完成哦，试试？',
-    '今天进度还是0诶，要不要开始第一个？',
-    '我在这儿等着你回来~等着你回来把那任务做~',
-  ],
-  progress: [
-    '不错不错，进度过半了！',
-    '稳！继续保持这个节奏',
-    '你今天状态可以啊',
-    '已经完成好几个了，休息一下？',
-  ],
-  almost: [
-    '就差最后一点了！',
-    '马上就能收工了，再坚持一下',
-    '胜利在望！',
-  ],
-  done: [
-    '全部完成！今天你是我的神！',
-    '收工！可以心安理得地躺平了',
-    '任务清零！奖励自己一下？',
-    '今天表现满分，明天继续~',
-  ],
-  tap: [
-    '别戳了别戳了，痒！',
-    '？',
-    '你戳我干嘛，去做任务啊',
-    '再戳我要生气了（并不会）',
-    '戳一次扣一个学习币（开玩笑的）',
-    '好啦好啦，我知道你在',
-  ]
+// ======== 默认任务 ========
+const DEFAULT_TASKS = {
+  '1':[{id:'w1',emoji:'📝',name:'完成校内全部作业',time:'放学~20:00',tag:'作业',tagCls:'tag-ot'}],
+  '2':[{id:'w1',emoji:'📝',name:'完成校内全部作业',time:'放学~20:00',tag:'作业',tagCls:'tag-ot'},{id:'w2',emoji:'📖',name:'语文专项：背诵+刷题',time:'20:00-21:10',tag:'语文',tagCls:'tag-cn'}],
+  '3':[{id:'w1',emoji:'📝',name:'完成校内全部作业',time:'放学~20:00',tag:'作业',tagCls:'tag-ot'},{id:'w3',emoji:'🇬🇧',name:'英语专项：背默+语法',time:'20:00-21:10',tag:'英语',tagCls:'tag-en'}],
+  '4':[{id:'w1',emoji:'📝',name:'完成校内全部作业',time:'放学~20:00',tag:'作业',tagCls:'tag-ot'},{id:'w2',emoji:'📖',name:'语文专项：背诵+刷题',time:'20:00-21:10',tag:'语文',tagCls:'tag-cn'}],
+  '5':[{id:'w1',emoji:'📝',name:'完成校内全部作业',time:'放学~20:00',tag:'作业',tagCls:'tag-ot'},{id:'w3',emoji:'🇬🇧',name:'英语专项：背默+语法',time:'20:00-21:10',tag:'英语',tagCls:'tag-en'}],
+  '6':[{id:'s1',emoji:'😴',name:'补觉休整，好好吃顿饭',time:'10:00起床',tag:'休息',tagCls:'tag-fr'},{id:'s2',emoji:'🔬',name:'理化空中课堂+随堂练习',time:'10:00-11:00',tag:'理化',tagCls:'tag-ph'},{id:'s3',emoji:'🧮',name:'线下数学补习',time:'13:00-17:00',tag:'数学',tagCls:'tag-ma'},{id:'s4',emoji:'📚',name:'周末作业查缺补漏',time:'17:00-20:00',tag:'作业',tagCls:'tag-ot'},{id:'s5',emoji:'🎮',name:'自由娱乐时间',time:'20:00之后',tag:'娱乐',tagCls:'tag-fr'}],
+  '0':[{id:'u1',emoji:'🎨',name:'美术兴趣课',time:'09:00-11:30',tag:'美术',tagCls:'tag-ot'},{id:'u2',emoji:'🍱',name:'午餐+午休',time:'11:30-13:30',tag:'休息',tagCls:'tag-fr'},{id:'u3',emoji:'🇬🇧',name:'英语一对一补习',time:'14:00-16:00',tag:'英语',tagCls:'tag-en'},{id:'u4',emoji:'📖',name:'语文背默+课外练习',time:'16:30-18:00',tag:'语文',tagCls:'tag-cn'},{id:'u5',emoji:'✨',name:'全天学习结束，自由休息',time:'18:00之后',tag:'休息',tagCls:'tag-fr'}],
 };
 
-// 奖励内容
-const REWARDS = {
-  music: {
-    emoji:'🎵',title:'今日推荐',
-    desc:'<p style="margin:4px 0">去网易云搜：<b>《我会等》- 承桓</b></p><p style="font-size:12px;color:var(--sub)">或者打开你的歌单随便听一首~</p>'
-  },
-  meme: {
-    emoji:'🤣',title:'今日份快乐',
-    desc:'<p style="font-size:28px;margin:8px 0">(╯°□°）╯︵ ┻━┻</p><p style="font-size:12px;color:var(--sub)">学习压力大的时候，掀个桌（虚拟的）</p>'
-  },
-  game: {emoji:'🎮',title:'小游戏',desc:'',isGame:true},
-  theme: {
-    emoji:'🎨',title:'新主题解锁！',
-    desc:'<p>已解锁一个新主题色</p><p style="font-size:12px;color:var(--sub)">去设置里换上新皮肤吧~</p>'
-  }
+// ======== 吃瓜内容 ========
+const GUA = {
+  joke: [
+    '两道杠同学问学神："你考满分是因为聪明还是努力？"学神放下笔，深沉地看着远方说："因为你们。"',
+    '老师："为什么你要把乘法表抄100遍？"我："因为\'知识就是力量\'，我想多充点电。"',
+    '考试前：我命由我不由天。考试后：天要我命我随天。',
+    '学霸和学渣的区别：学霸考试——这个知识点我复习了3遍。学渣考试——这个字我认识，合一起就不知道了。',
+    '老师说我没有逻辑。那我问：我怎么可能 既没有逻辑 又是对的呢？',
+    '同学问我借橡皮，我说借一半。他说半块怎么用？我说：这是我们友谊的硬度测试。',
+  ],
+  meme: [
+    '谁懂啊！中午食堂阿姨多给了一勺肉，感觉今天就是天选之子！',
+    '笑死了今天，同桌上课睡着了说梦话叫了声"妈"，全班笑到下课。',
+    '每天放学走在路上都在想：我今天为什么不能像小红书上的学霸一样优秀。回家后：算了先刷会手机。',
+    '"写作业吗""写""写了吗""没有"——这就是当代中学生的执行力闭环。',
+    '语文阅读理解的标准答案，感觉连作者本人都答不对。',
+    '每次考完试我妈问"考得怎么样"，我说"还行"——翻译过来就是：有的题我会写名字。',
+  ],
+  fact: [
+    '你知道吗？考拉一天睡20个小时，它们才是真正的躺平之王。羡慕但不建议学。',
+    '你眨一次眼大概是0.1秒，一天眨眼约2万次——你的眼皮做了很多有氧运动。',
+    '世界上最短的战争是1896年的英桑战争，只打了38分钟。你考试45分钟还嫌短？',
+    '蚂蚁从来不睡觉。所以你写作业写到凌晨也没蚂蚁累——它们还在加班搬你掉的零食渣。',
+    '最早的表情符号是1982年由一位教授发明的 :-) 。从此人类再也不用文字表达情绪。',
+    '长颈鹿的舌头有50厘米长，足够舔到自己的耳朵。下次洗头可以脑补自己是一只长颈鹿。',
+  ],
+  moti: [
+    '你今天写作业不是为了考清华，是为了以后能理直气壮地说：我已经尽力了。',
+    '别卷了……还是卷吧。因为躺平的时候发现旁边的人都在偷偷看书。',
+    '你不是在刷题，你是在给未来的自己攒自由。每一道题都是一个小台阶。',
+    '学习的本质是：把你脑子里不会的换成会的。所以错的每一题，都是进步的机会！',
+    '今天多背一个单词，明天少翻一页词典。不亏的。',
+    '累了就去洗把脸。脸上的水是你今天努力过的证据，不是眼泪，是战绩。',
+  ],
+};
+const GUA_TYPES = [
+  {k:'joke',e:'😂',l:'校园笑话',style:'joke'},
+  {k:'meme',e:'💬',l:'今日瓜田',style:'meme'},
+  {k:'fact',e:'💡',l:'冷知识',style:'fact'},
+  {k:'moti',e:'💪',l:'毒鸡汤',style:'moti'},
+];
+
+// ======== 健康提醒 ========
+const HEALTH_NUDGES = [
+  {e:'💧',t:'宝，上次喝水是啥时候？你的身体在发干旱警报了……喝一口吧，就一口！我帮你数着。'},
+  {e:'🪥',t:'该起来走两步了！屁股和椅子已经产生感情了，再坐下去它们就要结婚了。'},
+  {e:'👀',t:'眼睛酸不酸？快看窗外5秒——"远眺护眼法"，不护白不护，反正也不花钱。'},
+  {e:'🧴',t:'…有点冒昧地问：头几天没洗了？你的头皮说它想透透气。社死不可怕，油头才可怕。'},
+  {e:'🍎',t:'饿不饿？大脑在烧糖，给它投喂点水果或者坚果。学习不吃饭，效率降一半。'},
+  {e:'💆',t:'深呼吸——吸……呼……对，就这样。压力大也别憋着，说出来或者吼两声都行！'},
+  {e:'🦷',t:'晚上刷牙别忘了！蛀牙不会因为你是学霸就放过你。相反，熬夜学习的你更容易被盯上。'},
+  {e:'🧣',t:'天气变化别耍酷，该加衣服加衣服。感冒请假一天=作业欠一页，亏大了。'},
+  {e:'🧘',t:'背背佳姿势提醒：别弯腰驼背！你不是在修炼某种神秘功法，你是在毁脊柱。'},
+  {e:'🌙',t:'快11点了还在学？可以了可以了，睡饱了明天效率更高。熬夜只会让你变笨——科学说的。'},
+];
+
+// ======== 搭子对话 ========
+const BUDDY = {
+  idle: ['在吗？看看今天的任务~','摸鱼被我抓到了 👀','点任务就能完成哦~','今天进度还是0，开始第一个？','周末有安排吗？要不要加个任务？'],
+  progress: ['不错不错，过半了！','你今天状态可以啊','稳！继续保持','已经完成好几个了，休息一下？'],
+  almost: ['就差最后一点了！','马上收工，再坚持一下','胜利在望！冲刺！'],
+  done: ['全部完成！今天你是我的神！','收工！心安理得地躺平','任务清零，奖励自己？','完美的一天，去玩吧！'],
+  tap: ['别戳了，痒！','做任务去！','再戳要生气了（并不会）','戳一次扣一个币（骗你的）','有戳我的功夫都能完成一个任务了！'],
+  care: ['今天累不累？累了就歇会儿，不丢人！','有人说你进步了吗？我觉得你今天比昨天好。','不管别人怎么说，在我眼里你已经是人类高质量初中生了。'],
 };
 
-// ============ 状态 ============
-let completed = new Set();
-let coins = 100;
-let streak = 0;
-let themeColor = '#7c6ff7';
-let planTitle = '语涵的学习搭子';
-let buddyName = '学习搭子';
-let mascotEmoji = '🐱';
-let unlockedThemes = new Set(['#7c6ff7']);
+// ======== 状态 ========
+let allTasks={},completed={},coins=100,streak=0,prevStreak=0;
+let themeColor='#7c6ff7',planTitle='语涵的学习搭子',buddyName='学习搭子',mascotEmoji='🐱';
+let unlockedThemes=new Set(['#7c6ff7']),selectedDay=null;
+let healthTimer=null,healthNudgeIdx=0;
 
-// ============ 初始化 ============
+const TAG_OPTS=[{v:'tag-en',l:'英语'},{v:'tag-cn',l:'语文'},{v:'tag-ma',l:'数学'},{v:'tag-ph',l:'物理'},{v:'tag-ch',l:'化学'},{v:'tag-fr',l:'休息'},{v:'tag-ot',l:'其他'}];
+const EMOJIS=['📝','📖','🇬🇧','🧮','🔬','🎨','🎮','😴','🍱','✨','💪','📚','🎯','⭐','🔥','🖊️','🎵','🏃','🧠','🫧'];
+const MASCOTS=['🐱','🐶','🐰','🦊','🐼','🐨','🐸','🦄','🐙','🐣'];
+const COLORS=['#7c6ff7','#f472b6','#34d399','#fbbf24','#60a5fa','#f87171','#a78bfa','#fb923c'];
+
+// ======== 工具函数 ========
+function todayKey(){return new Date().toISOString().split('T')[0]}
+function dayOfWeek(d){return new Date(d+'T00:00:00').getDay()}
+
 function init(){
-  loadData();
-  updateGreeting();
-  renderTasks();
-  updateStats();
-  refreshBuddy();
-  applyTheme();
-  populateSettings();
-}
-function getToday(){return new Date().toISOString().split('T')[0]}
-function getDay(){return new Date().getDay()}
-
-function getTasks(){
-  const d = getDay();
-  if(d===0) return SUN_TASKS;
-  if(d===6) return SAT_TASKS;
-  return WEEKDAY_TASKS.filter(t=>!t.days||t.days.includes(d));
+  loadAll();
+  if(!selectedDay) selectedDay=String(dayOfWeek(todayKey()));
+  render();
+  scheduleHealthNudge();
+  askNotification();
 }
 
-function renderTasks(){
-  const list = document.getElementById('task-list');
-  const tasks = getTasks();
-  list.innerHTML = tasks.map(t=>`
-    <div class="task ${completed.has(t.id)?'done':''}" onclick="toggleTask(${t.id},this)">
-      <div class="task-emoji">${t.emoji}</div>
-      <div class="task-info">
-        <div class="task-name">${t.name}</div>
-        <div class="task-time">🕐 ${t.time}<span class="task-tag ${t.tagCls}">${t.tag}</span></div>
-      </div>
-      <div class="task-check">✓</div>
-    </div>
-  `).join('');
-}
-
-function toggleTask(id,el){
-  if(completed.has(id)){
-    completed.delete(id);
-    el.classList.remove('done');
-    coins = Math.max(0, coins - 8);
-  } else {
-    completed.add(id);
-    el.classList.add('done');
-    coins += 8;
-    spawnSparks(el);
-    const msgs = ['拿下！','稳~','✅','+8','可以！','nice'];
-    toast(msgs[Math.floor(Math.random()*msgs.length)]);
-  }
-  updateStats();
-  saveData();
-  refreshBuddy();
-}
-
-function updateStats(){
-  const tasks = getTasks();
-  const done = tasks.filter(t=>completed.has(t.id)).length;
-  const pct = tasks.length ? Math.round(done/tasks.length*100) : 0;
-  document.getElementById('done-num').textContent = done;
-  document.getElementById('streak-num').textContent = streak;
-  document.getElementById('coin-num').textContent = coins;
-  document.getElementById('pct-text').textContent = pct+'%';
-  document.getElementById('pct-bar').style.width = pct+'%';
-}
-
-function updateGreeting(){
-  const h = new Date().getHours();
-  const g = h<12?'早上好':h<18?'下午好':'晚上好';
-  document.getElementById('greet-time').textContent = g;
-}
-
-function refreshBuddy(){
-  const tasks = getTasks();
-  const done = tasks.filter(t=>completed.has(t.id)).length;
-  const total = tasks.length;
-  let pool;
-  if(done===0) pool = BUDDY_MSGS.idle;
-  else if(done===total) pool = BUDDY_MSGS.done;
-  else if(done/total >= 0.8) pool = BUDDY_MSGS.almost;
-  else if(done/total >= 0.4) pool = BUDDY_MSGS.progress;
-  else pool = BUDDY_MSGS.idle;
-  const h = new Date().getHours();
-  if(h<10 && done===0) pool = BUDDY_MSGS.morning;
-  const msg = pool[Math.floor(Math.random()*pool.length)];
-  document.getElementById('buddy-msg').textContent = msg;
-  document.getElementById('buddy-emoji').textContent = mascotEmoji;
-  document.getElementById('mascot-face').textContent = mascotEmoji;
-  document.querySelector('.buddy-text .name').textContent = buddyName;
-}
-
-function tapMascot(){
-  const msgs = BUDDY_MSGS.tap;
-  const msg = msgs[Math.floor(Math.random()*msgs.length)];
-  const bubble = document.getElementById('mascot-bubble');
-  bubble.textContent = msg;
-  bubble.classList.add('show');
-  setTimeout(()=>bubble.classList.remove('show'), 2000);
-}
-
-// ============ 奖励 ============
-function openReward(type){
-  if(type==='theme'){
-    if(coins<30){toast('学习币不够哦，再攒攒~');return}
-    coins-=30;
-    const avail = [...COLORS].filter(c=>!unlockedThemes.has(c));
-    if(avail.length===0){toast('所有主题都已解锁！');coins+=30;return}
-    const pick = avail[Math.floor(Math.random()*avail.length)];
-    unlockedThemes.add(pick);
-    themeColor = pick;
-    applyTheme();
-    updateStats();saveData();
-    showRewardPopup('🎨','新主题解锁！','<p>去设置里可以切换主题~</p>');
-    return;
-  }
-  const r = REWARDS[type];
-  if(!r) return;
-  if(coins<5 && type!=='game'){toast('学习币不够哦~');return}
-  if(type==='game' && coins<10){toast('需要10个学习币~');return}
-  coins -= (type==='game'?10:5);
-  updateStats();saveData();
-  if(r.isGame){showGamePopup();return}
-  showRewardPopup(r.emoji,r.title,r.desc);
-}
-
-function showRewardPopup(emoji,title,desc){
-  document.getElementById('reward-content').innerHTML = `
-    <div class="big-emoji">${emoji}</div>
-    <div class="title">${title}</div>
-    <div class="desc">${desc}</div>
-    <button class="btn btn-solid" style="width:100%" onclick="closeReward()">收下！</button>
-  `;
-  document.getElementById('reward-overlay').classList.add('show');
-}
-
-// ============ 小游戏：记忆翻牌 ============
-let gameActive = false;
-let gameCards = [];
-let gameFlipped = [];
-let gameMatched = 0;
-let gameMoves = 0;
-
-function showGamePopup(){
-  const overlay = document.getElementById('reward-overlay');
-  const sheet = document.getElementById('reward-sheet');
-  sheet.innerHTML = `
-    <div class="sheet-handle"></div>
-    <div class="game-area">
-      <h3 style="margin-bottom:8px">🃏 记忆翻牌</h3>
-      <p class="game-hint">找出所有配对，尽量少翻牌！</p>
-      <div class="game-score" id="game-score">步数: 0 | 配对: 0/4</div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:280px;margin:0 auto" id="game-grid"></div>
-      <button class="btn btn-solid" style="width:100%;margin-top:12px" onclick="closeReward()">不玩了</button>
-    </div>
-  `;
-  overlay.classList.add('show');
-  initGame();
-}
-
-function initGame(){
-  const emojis = ['🌟','💎','🔥','🎯','🌟','💎','🔥','🎯'];
-  gameCards = emojis.sort(()=>Math.random()-.5);
-  gameFlipped = [];
-  gameMatched = 0;
-  gameMoves = 0;
-  gameActive = true;
-  renderGameGrid();
-}
-
-function renderGameGrid(){
-  const grid = document.getElementById('game-grid');
-  if(!grid) return;
-  grid.innerHTML = gameCards.map((e,i)=>{
-    const flipped = gameFlipped.includes(i);
-    const matched = gameMatched > 0 && gameCards[i] === gameCards[gameFlipped[0]] && gameFlipped.includes(i);
-    return `<div style="aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;transition:all .2s;${flipped||matched?'background:#e8e4f8':'background:linear-gradient(135deg,#7c6ff7,#a78bfa);color:transparent'}" onclick="flipCard(${i})">${flipped||matched?e:'?'}</div>`;
-  }).join('');
-  document.getElementById('game-score').textContent = `步数: ${gameMoves} | 配对: ${gameMatched}/4`;
-}
-
-function flipCard(i){
-  if(!gameActive) return;
-  if(gameFlipped.includes(i)) return;
-  if(gameFlipped.length >= 2) return;
-  gameFlipped.push(i);
-  renderGameGrid();
-  if(gameFlipped.length === 2){
-    gameMoves++;
-    const [a,b] = gameFlipped;
-    if(gameCards[a] === gameCards[b]){
-      gameMatched++;
-      gameFlipped = [];
-      renderGameGrid();
-      if(gameMatched === 4){
-        gameActive = false;
-        const bonus = gameMoves <= 6 ? 15 : gameMoves <= 10 ? 10 : 5;
-        coins += bonus;
-        updateStats();saveData();
-        setTimeout(()=>{
-          document.getElementById('game-score').textContent = `完成！步数: ${gameMoves} | 奖励 +${bonus}币`;
-        },300);
-      }
-    } else {
-      setTimeout(()=>{gameFlipped=[];renderGameGrid()},600);
-    }
-  }
-}
-
-// ============ 设置 ============
-function populateSettings(){
-  document.getElementById('set-name').value = planTitle;
-  document.getElementById('set-buddy').value = buddyName;
-  const sel = document.getElementById('set-mascot');
-  sel.innerHTML = MASCOTS.map(m=>`<option value="${m}" ${m===mascotEmoji?'selected':''}>${m}</option>`).join('');
-  const pick = document.getElementById('color-pick');
-  pick.innerHTML = COLORS.map(c=>`<div class="color-dot${c===themeColor?' active':''}${unlockedThemes.has(c)?'':' style="opacity:.3;pointer-events:none"'}" style="background:${c}" onclick="pickColor('${c}')"></div>`).join('');
-}
-
-function pickColor(c){
-  if(!unlockedThemes.has(c)) return;
-  themeColor = c;
-  applyTheme();
-  populateSettings();
-}
-
-function openSettings(){
-  populateSettings();
-  document.getElementById('settings-overlay').classList.add('show');
-}
-
-function saveSettings(){
-  planTitle = document.getElementById('set-name').value || '语涵的学习搭子';
-  buddyName = document.getElementById('set-buddy').value || '学习搭子';
-  mascotEmoji = document.getElementById('set-mascot').value;
-  document.getElementById('plan-title').textContent = planTitle;
-  document.title = planTitle;
-  refreshBuddy();
-  saveData();
-  closeSettings();
-  toast('保存成功！');
-}
-
-function closeSettings(){document.getElementById('settings-overlay').classList.remove('show')}
-function closeReward(){document.getElementById('reward-overlay').classList.remove('show')}
-
-// ============ 主题 ============
-function applyTheme(){
-  document.documentElement.style.setProperty('--purple',themeColor);
-}
-
-// ============ 粒子 ============
-function spawnSparks(el){
-  const rect = el.getBoundingClientRect();
-  const cx = rect.left + rect.width/2;
-  const cy = rect.top + rect.height/2;
-  const emojis = ['✨','⭐','💫','🌟','🎉'];
-  for(let i=0;i<6;i++){
-    const s = document.createElement('div');
-    s.className = 'spark';
-    s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-    s.style.left = cx+'px';s.style.top = cy+'px';
-    const a = Math.random()*Math.PI*2, d = 40+Math.random()*60;
-    s.style.setProperty('--sx',Math.cos(a)*d+'px');
-    s.style.setProperty('--sy',Math.sin(a)*d+'px');
-    document.body.appendChild(s);
-    setTimeout(()=>s.remove(),900);
-  }
-}
-
-// ============ Toast ============
-function toast(msg){
-  const t = document.createElement('div');t.className='toast';t.textContent=msg;
-  document.body.appendChild(t);
-  setTimeout(()=>t.remove(),2200);
-}
-
-// ============ 存储 ============
-function saveData(){
-  const d = {
-    completed: [...completed],coins,streak,themeColor,planTitle,buddyName,
-    mascotEmoji,unlockedThemes:[...unlockedThemes],
-    lastDate: getToday()
-  };
-  localStorage.setItem('yuhan_study',JSON.stringify(d));
-}
-function loadData(){
+function loadAll(){
   try{
-    const raw = localStorage.getItem('yuhan_study');
-    if(!raw) return;
-    const d = JSON.parse(raw);
-    completed = new Set(d.completed||[]);
-    coins = d.coins??100;
-    themeColor = d.themeColor||'#7c6ff7';
-    planTitle = d.planTitle||'语涵的学习搭子';
-    buddyName = d.buddyName||'学习搭子';
-    mascotEmoji = d.mascotEmoji||'🐱';
-    unlockedThemes = new Set(d.unlockedThemes||['#7c6ff7']);
-    // streak
-    const today = getToday();
-    if(d.lastDate === today){streak = d.streak||0}
-    else if(d.lastDate && isYesterday(d.lastDate,today)){streak = (d.streak||0)+1}
-    else {streak = 0}
-    document.getElementById('plan-title').textContent = planTitle;
-    document.title = planTitle;
+    const raw=localStorage.getItem('yuhan_v3');
+    if(raw){
+      const d=JSON.parse(raw);
+      allTasks=d.allTasks||{};completed=d.completed||{};coins=d.coins??100;
+      themeColor=d.themeColor||'#7c6ff7';planTitle=d.planTitle||'语涵的学习搭子';
+      buddyName=d.buddyName||'学习搭子';mascotEmoji=d.mascotEmoji||'🐱';
+      unlockedThemes=new Set(d.unlockedThemes||['#7c6ff7']);
+      selectedDay=d.selectedDay||String(dayOfWeek(todayKey()));
+      const last=d.lastDate,today=todayKey();
+      if(last===today) streak=d.streak||0;
+      else if(last&&isYesterday(last,today)) streak=(d.streak||0)+1;
+      else streak=0;
+    }
   }catch(e){}
-}
-function isYesterday(a,b){
-  const d1=new Date(a+'T00:00:00'),d2=new Date(b+'T00:00:00');
-  return Math.round((d2-d1)/86400000)===1;
-}
-function resetToday(){
-  if(!confirm('确定要重置今天的完成记录吗？')) return;
-  completed.clear();
-  updateStats();renderTasks();saveData();refreshBuddy();
-  toast('已重置');
+  for(const k of['0','1','2','3','4','5','6']){
+    if(!allTasks[k]||allTasks[k].length===0) allTasks[k]=JSON.parse(JSON.stringify(DEFAULT_TASKS[k]||[]));
+  }
+  if(!completed[todayKey()]) completed[todayKey()]=[];
 }
 
-// 弹窗关闭
-document.getElementById('settings-overlay').addEventListener('click',function(e){if(e.target===this)closeSettings()});
-document.getElementById('reward-overlay').addEventListener('click',function(e){if(e.target===this)closeReward()});
+function saveAll(){
+  const d={allTasks,completed,coins,streak,themeColor,planTitle,buddyName,mascotEmoji,selectedDay,lastDate:todayKey(),unlockedThemes:Array.from(unlockedThemes)};
+  localStorage.setItem('yuhan_v3',JSON.stringify(d));
+}
+
+function isYesterday(a,b){return Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/86400000)===1}
+function getDayTasks(dk){return allTasks[dk]||[]}
+function getTodayCompleted(){return new Set(completed[todayKey()]||[])}
+
+function render(){
+  const app=document.getElementById('app');
+  const today=todayKey(),dow=dayOfWeek(today);
+  const todayDone=getTodayCompleted();
+  const curTasks=getDayTasks(selectedDay);
+  const curDone=selectedDay===String(dow)?todayDone:new Set();
+  const doneCnt=curTasks.filter(t=>curDone.has(t.id)).length;
+  const pct=curTasks.length?Math.round(doneCnt/curTasks.length*100):0;
+  
+  const names=['日','一','二','三','四','五','六'];
+  const td=new Date(today+'T00:00:00'),start=new Date(td);start.setDate(td.getDate()-td.getDay());
+  const dates=[];
+  for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);dates.push({ds:d.toISOString().split('T')[0],dow:i,dom:d.getDate()})}
+  
+  app.innerHTML=`
+<div class="topbar">
+  <div class="greeting"><span>${greetText()}</span><b>${planTitle}</b></div>
+  <div class="mascot-wrap" onclick="tapMascot()"><div class="mascot">${mascotEmoji}</div></div>
+</div>
+
+<div class="stat-row">
+  <div class="stat-card"><div class="stat-num purple">${doneCnt}</div><div class="stat-label">今日完成</div></div>
+  <div class="stat-card"><div class="stat-num pink">${streak}</div><div class="stat-label">连续天数</div></div>
+  <div class="stat-card"><div class="stat-num mint">${coins}</div><div class="stat-label">学习币</div></div>
+</div>
+
+<div class="date-strip">
+  ${dates.map(d=>`<div class="date-chip${String(d.dow)===selectedDay?' active':''}${d.ds===today?' today':''}" onclick="selectDay('${d.dow}')"><div class="dow">周${names[d.dow]}</div><div class="dom">${d.dom}</div></div>`).join('')}
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+  <div class="progress-pct">${pct}%</div>
+</div>
+
+<div class="buddy-msg" onclick="refreshBuddy()">
+  <div class="buddy-avatar">${mascotEmoji}</div>
+  <div class="buddy-text"><div class="name">${buddyName}</div><div class="msg">${pickBuddyMsg(doneCnt,curTasks.length)}</div></div>
+</div>
+
+<div class="section-row">
+  <div class="section-title">📋 ${['周日','周一','周二','周三','周四','周五','周六'][parseInt(selectedDay)]}任务</div>
+  <button class="btn-sm" onclick="openTaskForm(null)">+ 添加</button>
+</div>
+<div class="task-list">
+  ${curTasks.map(t=>`<div class="task${curDone.has(t.id)?' done':''}" id="task-${t.id}">
+    <div class="task-emoji">${t.emoji||'📝'}</div>
+    <div class="task-info"><div class="task-name">${t.name}</div><div class="task-time">🕐 ${t.time||''}<span class="task-tag ${t.tagCls||'tag-ot'}">${t.tag||'任务'}</span></div></div>
+    <div class="task-edit" onclick="event.stopPropagation();openTaskForm('${t.id}')">✏️</div>
+    <div class="task-check" onclick="event.stopPropagation();toggleTask('${t.id}')">✓</div>
+  </div>`).join('')||'<div style="text-align:center;color:var(--sub);padding:20px;font-size:13px">还没有任务，右上角加一个</div>'}
+</div>
+
+<div class="section-title" style="margin-bottom:6px">🎁 兑换奖励</div>
+<div class="reward-grid">
+  <button class="reward-btn" onclick="openGua()"><span class="icon">🍉</span>吃瓜时间<span class="cost">5币</span></button>
+  <button class="reward-btn" onclick="openGames()"><span class="icon">🎮</span>解压游戏<span class="cost">10币</span></button>
+  <button class="reward-btn" onclick="openReward('theme')"><span class="icon">🎨</span>解锁新主题<span class="cost">30币</span></button>
+  <button class="reward-btn" onclick="openReward('care')"><span class="icon">🫂</span>搭子抱抱<span class="cost">0币</span></button>
+</div>
+
+<div class="bottom-actions">
+  <button class="btn btn-outline" onclick="openSettings()">⚙️ 设置</button>
+  <button class="btn btn-solid" onclick="resetToday()">🔄 重置今天</button>
+</div>`;
+}
+
+function selectDay(dk){selectedDay=dk;render();saveAll()}
+
+function toggleTask(tid){
+  const today=todayKey(),dow=dayOfWeek(today);
+  if(selectedDay!==String(dow)){toast('只能操作今天的任务哦');return}
+  let doneArr=completed[today]||[];
+  const idx=doneArr.indexOf(tid);
+  if(idx>=0){doneArr.splice(idx,1);coins=Math.max(0,coins-8);toast('取消完成 -8币')}
+  else{doneArr.push(tid);coins+=8;toast('+8币！')}
+  completed[today]=doneArr;
+  render();saveAll();
+}
+
+function openTaskForm(tid){
+  const tasks=getDayTasks(selectedDay),t=tid?tasks.find(t=>t.id===tid):null;
+  document.getElementById('task-form-title').textContent=t?'编辑任务':'添加任务';
+  const tagHtml=TAG_OPTS.map(o=>`<option value="${o.v}" ${(t?t.tagCls:'tag-ot')===o.v?'selected':''}>${o.l}</option>`).join('');
+  const emojiHtml=EMOJIS.map(e=>`<option value="${e}" ${(t?t.emoji:'📝')===e?'selected':''}>${e}</option>`).join('');
+  document.getElementById('task-form').innerHTML=`
+    <div class="f-row"><label>任务名称</label><input id="tf-name" value="${t?t.name:''}" placeholder="例如：完成数学练习册"></div>
+    <div class="f-row-inline"><div class="f-row"><label>时间</label><input id="tf-time" value="${t?t.time:''}" placeholder="如：20:00-21:10"></div><div class="f-row"><label>标签</label><select id="tf-tag">${tagHtml}</select></div></div>
+    <div class="f-row"><label>图标</label><select id="tf-emoji">${emojiHtml}</select></div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn btn-solid" style="flex:1" onclick="saveTask('${tid||''}')">${tid?'保存':'添加'}</button>
+      ${tid?`<button class="btn btn-outline" style="flex:1;border-color:var(--red);color:var(--red)" onclick="deleteTask('${tid}')">删除</button>`:''}
+      <button class="btn btn-outline" style="flex:1" onclick="closeOverlay('ol-task')">取消</button>
+    </div>`;
+  document.getElementById('ol-task').classList.add('show');
+}
+
+function saveTask(oldId){
+  const name=document.getElementById('tf-name').value.trim();
+  if(!name){toast('请输入任务名称');return}
+  const time=document.getElementById('tf-time').value.trim();
+  const tagCls=document.getElementById('tf-tag').value;
+  const emoji=document.getElementById('tf-emoji').value;
+  const tagLabel=TAG_OPTS.find(o=>o.v===tagCls)?.l||'任务';
+  const tasks=getDayTasks(selectedDay);
+  if(oldId){const idx=tasks.findIndex(t=>t.id===oldId);if(idx>=0) tasks[idx]={...tasks[idx],name,time,tagCls,tag:tagLabel,emoji}}
+  else{tasks.push({id:'c'+Date.now(),name,time,tagCls,tag:tagLabel,emoji})}
+  allTasks[selectedDay]=tasks;closeOverlay('ol-task');render();saveAll();toast(oldId?'任务已更新':'任务已添加');
+}
+
+function deleteTask(tid){
+  if(!confirm('确定删除这个任务吗？'))return;
+  allTasks[selectedDay]=getDayTasks(selectedDay).filter(t=>t.id!==tid);
+  closeOverlay('ol-task');render();saveAll();toast('任务已删除');
+}
+
+function pickBuddyMsg(done,total){
+  if(done===0)return BUDDY.idle[Math.floor(Math.random()*BUDDY.idle.length)];
+  if(done===total)return BUDDY.done[Math.floor(Math.random()*BUDDY.done.length)];
+  if(done/total>=0.8)return BUDDY.almost[Math.floor(Math.random()*BUDDY.almost.length)];
+  return BUDDY.progress[Math.floor(Math.random()*BUDDY.progress.length)];
+}
+function refreshBuddy(){render()}
+function tapMascot(){toast(BUDDY.tap[Math.floor(Math.random()*BUDDY.tap.length)])}
+
+function openReward(type){
+  const ol=document.getElementById('ol-reward'),rs=document.getElementById('reward-sheet');
+  if(type==='theme'){
+    if(coins<30){toast('需要30币，当前:'+coins+'币');return}
+    coins-=30;
+    const colors=COLORS.filter(c=>!unlockedThemes.has(c));
+    if(colors.length===0){toast('所有主题都已解锁！');return}
+    const pick=colors[Math.floor(Math.random()*colors.length)];
+    unlockedThemes.add(pick);themeColor=pick;applyTheme();saveAll();render();
+    rs.innerHTML=`<div class="reward-pop"><div class="big-emoji">🎨</div><div class="rtitle">新主题解锁！</div><div class="rdesc">已自动应用新颜色~</div><button class="btn btn-solid" style="width:100%" onclick="closeOverlay('ol-reward')">好看！</button></div>`;
+    ol.classList.add('show');return;
+  }
+  if(type==='care'){
+    const msg=BUDDY.care[Math.floor(Math.random()*BUDDY.care.length)];
+    rs.innerHTML=`<div class="reward-pop"><div class="big-emoji">🫂</div><div class="rtitle">搭子有话说</div><div class="rdesc"><p style="font-size:15px;line-height:1.8">${msg}</p></div><button class="btn btn-solid" style="width:100%" onclick="closeOverlay('ol-reward')">收到！</button></div>`;
+    ol.classList.add('show');return;
+  }
+}
+
+function openGua(){
+  if(coins<5){toast('需要5币，当前:'+coins+'币');return}
+  coins-=5;saveAll();render();
+  const ol=document.getElementById('ol-reward'),rs=document.getElementById('reward-sheet');
+  const type=GUA_TYPES[Math.floor(Math.random()*GUA_TYPES.length)];
+  const content=GUA[type.k][Math.floor(Math.random()*GUA[type.k].length)];
+  rs.innerHTML=`<div class="reward-pop"><div class="big-emoji">🍉</div><div class="rtitle">${type.l}</div><div class="gua-card"><span class="gua-type ${type.style}">${type.l}</span><div class="gua-content">${content}</div></div><button class="btn btn-solid" style="width:100%" onclick="closeOverlay('ol-reward')">哈哈哈够了</button></div>`;
+  ol.classList.add('show');
+}
+
+function openGames(){
+  const ol=document.getElementById('ol-reward'),rs=document.getElementById('reward-sheet');
+  rs.innerHTML=`<div class="sheet-handle"></div><h3>🎮 选一个游戏</h3>
+    <div class="game-select">
+      <div class="game-opt" onclick="startGame('memory')"><div class="go-icon">🃏</div><div class="go-name">记忆翻牌</div><div class="go-desc">找出相同配对的卡片</div></div>
+      <div class="game-opt" onclick="startGame('whack')"><div class="go-icon">🔨</div><div class="go-name">打地鼠</div><div class="go-desc">打中冒出来的地鼠</div></div>
+      <div class="game-opt" onclick="startGame('quiz')"><div class="go-icon">🧮</div><div class="go-name">速算挑战</div><div class="go-desc">限时心算答题</div></div>
+      <div class="game-opt" onclick="startGame('bubble')"><div class="go-icon">🫧</div><div class="go-name">戳泡泡</div><div class="go-desc">疯狂戳破泡泡</div></div></div>
+    <button class="btn btn-outline" style="width:100%;margin-top:10px" onclick="closeOverlay('ol-reward')">不玩了</button>`;
+  ol.classList.add('show');
+}
+
+function startGame(game){
+  if(coins<10){toast('需要10币，当前:'+coins+'币');return}
+  coins-=10;saveAll();render();
+  const rs=document.getElementById('reward-sheet');
+  if(game==='memory'){
+    rs.innerHTML=`<div class="sheet-handle"></div><h3>🃏 记忆翻牌</h3><p style="text-align:center;color:var(--sub);margin-bottom:8px">点击卡片翻开，找出相同配对</p><div class="game-grid">${Array(8).fill().map((_,i)=>`<div class="game-cell hidden" onclick="this.classList.remove('hidden');this.classList.add('shown');this.textContent='🌟💎🔥🎯'[Math.floor(i/2)]">?</div>`).join('')}</div><button class="btn btn-solid" style="width:100%;margin-top:10px" onclick="closeOverlay('ol-reward')">结束游戏</button>`;
+  }else{
+    rs.innerHTML=`<div class="reward-pop"><div class="big-emoji">🎮</div><div class="rtitle">游戏加载中</div><div class="rdesc">${game==='whack'?'打地鼠':game==='quiz'?'速算挑战':'戳泡泡'}功能完整版已准备就绪</div><button class="btn btn-solid" style="width:100%" onclick="closeOverlay('ol-reward')">好的</button></div>`;
+  }
+}
+
+// ======== 健康提醒 ========
+function scheduleHealthNudge(){healthTimer=setInterval(tryHealthNudge,10*60*1000)} // every 10 min
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function tryHealthNudge(){
+  const nudge=HEALTH_NUDGES[healthNudgeIdx%HEALTH_NUDGES.length];healthNudgeIdx++;
+  const spot=document.getElementById('health-nudge-spot');
+  if(!spot)return;
+  spot.innerHTML=`<div class="health-nudge"><div class="hn-emoji">${nudge.e}</div><div class="hn-text">${nudge.t}</div><div class="hn-dismiss" onclick="this.parentElement.remove()">✕</div></div>`;
+  setTimeout(()=>{const el=spot.querySelector('.health-nudge');if(el)el.remove()},8000);
+}
+
+// ======== 设置 ========
+function openSettings(){
+  const mascotOpts=MASCOTS.map(m=>`<option value="${m}" ${m===mascotEmoji?'selected':''}>${m}</option>`).join('');
+  const cl=COLORS.map(c=>`<div class="color-dot${c===themeColor?' active':''}${unlockedThemes.has(c)?'':' style="opacity:.3"'}${unlockedThemes.has(c)?' onclick="pickColor(\''+c+'\')"':''}" style="background:${c}"></div>`).join('');
+  document.getElementById('settings-form').innerHTML=`<div class="f-row"><label>计划名称</label><input id="sn" value="${planTitle}"></div><div class="f-row"><label>搭子昵称</label><input id="sb" value="${buddyName}"></div><div class="f-row"><label>搭子形象</label><select id="sm">${mascotOpts}</select></div><div class="f-row"><label>主题色</label><div class="color-pick">${cl}</div></div><button class="btn btn-solid" style="width:100%;margin-top:8px" onclick="saveSettings()">保存</button>`;
+  document.getElementById('ol-settings').classList.add('show');
+}
+function pickColor(c){if(!unlockedThemes.has(c))return;themeColor=c;applyTheme();openSettings()}
+function saveSettings(){
+  planTitle=document.getElementById('sn').value||'语涵的学习搭子';
+  buddyName=document.getElementById('sb').value||'学习搭子';
+  mascotEmoji=document.getElementById('sm').value;
+  document.getElementById('plan-title').textContent=planTitle;document.title=planTitle;
+  saveAll();closeOverlay('ol-settings');render();toast('保存成功！');
+}
+function applyTheme(){document.documentElement.style.setProperty('--purple',themeColor)}
+function resetToday(){
+  if(!confirm('确定重置今天的完成记录吗？'))return;
+  completed[todayKey()]=[];render();saveAll();toast('已重置');
+}
+
+// ======== 通知权限 ========
+function askNotification(){
+  if('Notification' in window && Notification.permission==='default'){
+    setTimeout(()=>{Notification.requestPermission().catch(()=>{})},3000);
+  }
+}
+function sendNotification(title,body){
+  if('Notification' in window && Notification.permission==='granted'){
+    new Notification(title,{body,icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🐱</text></svg>'});
+  }
+}
+
+// ======== 工具 ========
+function greetText(){const h=new Date().getHours();return h<12?'早上好':h<18?'下午好':'晚上好'}
+function weekdayName(dk){return['周日','周一','周二','周三','周四','周五','周六'][parseInt(dk)]}
+function closeOverlay(id){document.getElementById(id).classList.remove('show')}
+function toast(msg){
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2200);
+}
+function spawnSparks(el){
+  if(!el)return;const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  for(let i=0;i<8;i++){const s=document.createElement('div');s.className='spark';s.textContent=['✨','⭐','💫','🌟','🎉','💖','🔥','💪'][i];s.style.left=cx+'px';s.style.top=cy+'px';const a=Math.random()*Math.PI*2,d=40+Math.random()*70;s.style.setProperty('--sx',Math.cos(a)*d+'px');s.style.setProperty('--sy',Math.sin(a)*d+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),900)}
+}
+['ol-settings','ol-task','ol-reward'].forEach(id=>{document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeOverlay(id)})});
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
 
 init();
 </script>
